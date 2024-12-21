@@ -23,6 +23,12 @@ void Game::Draw()
 
 void Game::HandleInput()
 {
+
+  // TODO there is no chanse now for them to work together - meaning I if I press W and S, I'll get:
+  // X: 1 Y: 0
+  // X: 0 Y: 1
+  // X: 1 Y: 0
+  // X: 0 Y: 1
   // ifs are separate to work on each direction movement at the same time
   if(IsKeyDown(KEY_A))
     {

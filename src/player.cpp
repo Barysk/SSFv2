@@ -26,7 +26,8 @@ void Player::Move(Vector2 direction)
 {
   if (direction.x == 0 && direction.y == 0)
     {
-      this->direction = {0, 0};
+      this->direction.x = 0;
+      this->direction.y = 0;
     }
   else
     {
@@ -61,8 +62,12 @@ void Player::Move(Vector2 direction)
     }
 
   // Moving player
+  std::cout << "X: " << direction.x << " Y: " << direction.y << std::endl;
   position.x += direction.x * speed;
   position.y += direction.y * speed;
+
+  this->direction.x = 0;
+  this->direction.y = 0;
 
 }
 
