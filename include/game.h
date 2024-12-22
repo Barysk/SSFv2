@@ -12,5 +12,6 @@ public:
   void HandleInput();
 private:
   Player player;
+  Vector2 playerDirection;
 };
 

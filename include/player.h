@@ -9,6 +9,10 @@ public:
   void Draw();
   void Update();
   void Move(Vector2 direction);
+  // void MoveRight();
+  // void MoveLeft();
+  // void MoveUp();
+  // void MoveDown();
   void Attack();
 
 private:

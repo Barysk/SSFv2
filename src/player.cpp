@@ -24,47 +24,22 @@ void Player::Draw()
 
 void Player::Move(Vector2 direction)
 {
-  if (direction.x == 0 && direction.y == 0)
-    {
-      this->direction.x = 0;
-      this->direction.y = 0;
-    }
-  else
-    {
-      this->direction.x += direction.x;
-      this->direction.y += direction.y;
-    }
 
-  // Check for overload on X
-  if(this->direction.x > 1)
-    this->direction.x = 1;
-  else if(this->direction.x < -1)
-    this->direction.x = -1;
+  this->direction.x = direction.x;
+  this->direction.y = direction.y;
 
-  // Check for overload on Y
-  if(this->direction.y > 1)
-    this->direction.y = 1;
-  else if(this->direction.y < -1)
-    this->direction.y = -1;
+  float magnitude = sqrt((this->direction.x * this->direction.x) +
+                         (this->direction.y * this->direction.y));
 
-  // Normalizing Vector2
-  if(this->direction.x != 0 && this->direction.y != 0)
-    {
-
-      float magnitude = sqrt((this->direction.x * this->direction.x) +
-                             (this->direction.y * this->direction.y));
-
-      if (magnitude != 0) // Avoid division by zero
-      {
-        this->direction.x /= magnitude;
-        this->direction.y /= magnitude;
-      }
-    }
+  if (magnitude != 0) // Avoid division by zero
+  {
+    this->direction.x = this->direction.x / magnitude;
+    this->direction.y = this->direction.y / magnitude;
+  }
 
   // Moving player
-  std::cout << "X: " << direction.x << " Y: " << direction.y << std::endl;
-  position.x += direction.x * speed;
-  position.y += direction.y * speed;
+  position.x += this->direction.x * speed;
+  position.y += this->direction.y * speed;
 
   this->direction.x = 0;
   this->direction.y = 0;
