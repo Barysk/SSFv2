@@ -19,9 +19,10 @@ int main(void)
     {
 
       game.HandleInput();
+      game.Update();
 
       BeginDrawing();
-      ClearBackground(BLACK);
+      ClearBackground(GRAY);
 
       game.Draw();
 
@@ -31,6 +32,7 @@ int main(void)
 
 
     CloseWindow();
+
 
     return 0;
 }

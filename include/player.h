@@ -6,6 +6,7 @@ class Player
 public:
   Player();
   ~Player();
+  Camera2D camera;
   void Draw();
   void Update();
   void Move(Vector2 direction);

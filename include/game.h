@@ -1,5 +1,6 @@
 #pragma once
 #include "../include/player.h"
+#include "../include/background.h"
 
 
 class Game
@@ -13,5 +14,6 @@ public:
 private:
   Player player;
   Vector2 playerDirection;
+  Background background;
 };
 

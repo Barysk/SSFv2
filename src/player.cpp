@@ -9,6 +9,13 @@ Player::Player()
   position.y = (GetScreenHeight() - image.width)/2;
   rotation = 0;
   speed = 5;
+
+  // Camera Init
+  camera = {0}; // reseting any settings
+  camera.target = { (GetScreenWidth() - image.width) / 2.0f, (GetScreenHeight() - image.height) / 2.0f }; // initial camera pos
+  camera.offset = { (GetScreenWidth() - image.width) / 2.0f, (GetScreenHeight() - image.height) / 2.0f }; // centering camera on player
+  camera.zoom = 2.0f; // camera's zoom
+  camera.rotation = 0; // rotation
 }
 
 Player::~Player()
@@ -34,7 +41,6 @@ void Player::Draw()
 
 void Player::Move(Vector2 direction)
 {
-
   this->direction.x = direction.x;
   this->direction.y = direction.y;
 
@@ -59,6 +65,9 @@ void Player::Move(Vector2 direction)
       rotation = atan2(this->direction.y, this->direction.x) * RAD2DEG + 90; // Convert radians to degrees
     }
 
+  // Move camera
+  camera.target.x += (position.x - camera.target.x) * 0.25f;
+  camera.target.y += (position.y - camera.target.y) * 0.25f;
 }
 
 void Update();
