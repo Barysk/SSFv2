@@ -1,6 +1,4 @@
 #include "../include/player.h"
-#include <raymath.h>
-
 
 Player::Player()
 {

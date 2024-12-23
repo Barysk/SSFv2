@@ -1,6 +1,5 @@
 #include "../include/background.h"
-#include <raymath.h>
-#include <iostream>
+
 
 Background::Background()
 {
