@@ -62,7 +62,7 @@ void Game::HandleInput()
 
   // Function to move player
   player.Move(playerDirection);
-
+  background.Move(playerDirection);
   playerDirection = {0, 0};
 
 }

@@ -8,13 +8,19 @@ public:
   ~Background();
   void Update();
   void Draw();
+  void Move(Vector2 direction);
 private:
-  void drawBackground(Texture2D& image);
+  void drawBackground(Texture2D& image, Vector2 offset);
   Texture2D background;
   Texture2D midground;
   Texture2D foreground;
-  float offsetBack;
-  float offsetMid;
-  float offsetFor;
+  Vector2 offset;
+  float parallaxSpeed;
+  float parallaxStrengthBack;
+  float parallaxStrengthMid;
+  float parallaxStrengthFor;
+  Vector2 offsetBack;
+  Vector2 offsetMid;
+  Vector2 offsetFor;
 };
 
