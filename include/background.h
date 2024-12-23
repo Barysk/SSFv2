@@ -6,7 +6,7 @@ class Background
 {
 public:
   Background();
-  ~Background();
+  void UnloadImages();
   void Update();
   void Draw();
   void Move(Vector2 direction);

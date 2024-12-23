@@ -1,5 +1,6 @@
 #include <raylib.h>
 #include "include/game.h"
+#include <iostream>
 
 #define MAX(a, b) ((a)>(b)? (a) : (b))
 #define MIN(a, b) ((a)<(b)? (a) : (b))
@@ -14,7 +15,7 @@ int main(void)
   // Enable config flags for resizable window and vertical synchro
   SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT);
   InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "SSFv2");
-  SetWindowMinSize(320, 240);
+  SetWindowMinSize(640, 480);
 
   int gameScreenWidth = 640;
   int gameScreenHeight = 480;
@@ -33,20 +34,17 @@ int main(void)
       // Compute required framebuffer scaling
       float scale = MIN((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
 
-
       // Handle fullscreen toggle
+      // I will now assume that it is going to work on windows machines. Will check later.
+      // But this situation shows that probably other library is worth considering.
       if (IsKeyPressed(KEY_F11))
       {
           isFullscreen = !isFullscreen;
 
           if (isFullscreen)
-          {
-              SetWindowState(FLAG_FULLSCREEN_MODE);
-          }
+              SetWindowState(FLAG_WINDOW_MAXIMIZED && FLAG_WINDOW_TOPMOST && FLAG_BORDERLESS_WINDOWED_MODE);
           else
-          {
-              ClearWindowState(FLAG_FULLSCREEN_MODE);
-          }
+              ClearWindowState(FLAG_WINDOW_MAXIMIZED && FLAG_WINDOW_TOPMOST && FLAG_BORDERLESS_WINDOWED_MODE);
       }
 
       game.HandleInput();
@@ -63,17 +61,11 @@ int main(void)
         ClearBackground(BLACK);     // Clear screen background
 
         // Draw render texture to screen, properly scaled
+        // DrawTexturePro(Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint);
         DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },
                        (Rectangle){ (GetScreenWidth() - ((float)gameScreenWidth*scale))*0.5f, (GetScreenHeight() - ((float)gameScreenHeight*scale))*0.5f,
                        (float)gameScreenWidth*scale, (float)gameScreenHeight*scale }, (Vector2){ 0, 0 }, 0.0f, WHITE);
       EndDrawing();
-
-      // BeginDrawing();
-      // ClearBackground(BLACK);
-
-      // game.Draw();
-
-      // EndDrawing();
 
     }
 

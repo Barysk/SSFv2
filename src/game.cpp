@@ -8,7 +8,7 @@ Game::Game()
 
 Game::~Game()
 {
-
+  background.UnloadImages();
 }
 
 void Game::Update()

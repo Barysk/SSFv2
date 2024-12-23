@@ -21,7 +21,7 @@ Background::Background()
 
 
 
-Background::~Background()
+void Background::UnloadImages()
 {
   UnloadTexture(background);
   UnloadTexture(midground);
@@ -77,8 +77,8 @@ void Background::Move(Vector2 direction)
 void Background::drawBackground(Texture2D& image, Vector2 offset)
 {
   float scale = 10.0f;
-  float centerX = (float)GetScreenHeight() / 2 - offset.x;
-  float centerY = (float)GetScreenHeight() / 2 - offset.y;
+  float centerX = (float)680 / 2 - offset.x;
+  float centerY = (float)420 / 2 - offset.y;
 
   for (int y = -2; y <= 2; y++)
   {
