@@ -10,7 +10,7 @@ public:
   Camera2D camera;
   void Draw();
   void Update();
-  void Move(Vector2 direction);
+  void Move(Vector2 direction, float deltaTime);
   void Rotate(float degree);
   void Attack();
 
@@ -21,6 +21,7 @@ private:
   float rotation;
   int speed;
   int health;
+  int cameraSpeed;
 
 
 };

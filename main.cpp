@@ -47,7 +47,7 @@ int main(void)
               ClearWindowState(FLAG_WINDOW_MAXIMIZED && FLAG_WINDOW_TOPMOST && FLAG_BORDERLESS_WINDOWED_MODE);
       }
 
-      game.HandleInput();
+      //game.HandleInput();
       game.Update();
 
       // Draw everything in the render texture, note this will not be rendered on screen, yet

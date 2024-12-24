@@ -13,7 +13,7 @@ Background::Background()
   parallaxStrengthBack = 0.1f;
   parallaxStrengthMid = 0.5f;
   parallaxStrengthFor = 0.9f;
-  parallaxSpeed = 5.0f;
+  parallaxSpeed = 200.0f;
   offsetBack = {0, 0};
   offsetMid = {0, 0};
   offsetFor = {0, 0};
@@ -57,7 +57,7 @@ void Background::Draw()
 
 }
 
-void Background::Move(Vector2 direction)
+void Background::Move(Vector2 direction, float deltaTime)
 {
   // Normalizing Vector2: Vector2 length is needed
   float magnitude = sqrt((direction.x * direction.x) +
@@ -71,7 +71,7 @@ void Background::Move(Vector2 direction)
   }
 
   // *make += to enable drift mode xD
-  offset = direction;
+  offset = direction * deltaTime;
 }
 
 void Background::drawBackground(Texture2D& image, Vector2 offset)

@@ -6,7 +6,7 @@ Player::Player()
   position.x = (GetScreenWidth() - image.width)/2;
   position.y = (GetScreenHeight() - image.width)/2;
   rotation = 0;
-  speed = 5;
+  speed = 100;
 
   // Camera Init
   camera = {0}; // reseting any settings
@@ -14,6 +14,7 @@ Player::Player()
   camera.offset = { (GetScreenWidth() - image.width) / 2.0f, (GetScreenHeight() - image.height) / 2.0f }; // centering camera on player
   camera.zoom = 2.0f; // camera's zoom
   camera.rotation = 0; // rotation
+  cameraSpeed = 40;
 }
 
 Player::~Player()
@@ -37,7 +38,7 @@ void Player::Draw()
 }
 
 
-void Player::Move(Vector2 direction)
+void Player::Move(Vector2 direction, float deltaTime)
 {
   this->direction.x = direction.x;
   this->direction.y = direction.y;
@@ -55,8 +56,8 @@ void Player::Move(Vector2 direction)
   }
 
   // Moving player
-  position.x += this->direction.x * speed;
-  position.y += this->direction.y * speed;
+  position.x += this->direction.x * speed * deltaTime;
+  position.y += this->direction.y * speed * deltaTime;
 
   if (magnitude != 0)
     {
@@ -64,8 +65,8 @@ void Player::Move(Vector2 direction)
     }
 
   // Move camera
-  camera.target.x += (position.x - camera.target.x) * 0.25f;
-  camera.target.y += (position.y - camera.target.y) * 0.25f;
+  camera.target.x += (position.x - camera.target.x) * 0.25f * deltaTime * cameraSpeed;
+  camera.target.y += (position.y - camera.target.y) * 0.25f * deltaTime * cameraSpeed;
 }
 
 void Update();

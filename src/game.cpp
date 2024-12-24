@@ -4,6 +4,7 @@
 Game::Game()
 {
   playerDirection = {0, 0};
+  deltaTime = 0.0f;
 }
 
 Game::~Game()
@@ -13,6 +14,12 @@ Game::~Game()
 
 void Game::Update()
 {
+  // Updating deltaTime
+  deltaTime = GetFrameTime();
+
+  // Input
+  HandleInput();
+
   // Background
   background.Update();
 
@@ -62,9 +69,9 @@ void Game::HandleInput()
     }
 
   // Function to move player
-  player.Move(playerDirection);
+  player.Move(playerDirection, deltaTime);
   // Function to move background
-  background.Move(playerDirection);
+  background.Move(playerDirection, deltaTime);
   // Resetting Direction
   playerDirection = {0, 0};
 

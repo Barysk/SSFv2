@@ -12,7 +12,7 @@ public:
   void Draw();
   void HandleInput();
 private:
-  float deltaTime();
+  float deltaTime;
   Player player;
   Vector2 playerDirection;
   Background background;
