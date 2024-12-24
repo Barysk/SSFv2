@@ -10,7 +10,7 @@ Player::Player()
   speed = 100;
   health = 3;
   lastTimeFired = 0.0f;
-  cooldown = 0.3f;
+  cooldown = 0.15f;
 
   // Camera Init
   camera = {0}; // reseting any settings
@@ -28,8 +28,6 @@ Player::~Player()
 
 void Player::Draw()
 {
-  DrawCircle(position.x, position.y, 5.0, BLUE);
-
   // Define the source rectangle (entire texture) *Consider later usage of static_cast<float>
   Rectangle sRect = {0, 0, (float)image.width, (float)image.height};
 
@@ -69,18 +67,21 @@ void Player::Move(float deltaTime, Vector2 direction)
       rotation = atan2(this->direction.y, this->direction.x) * RAD2DEG + 90; // Convert radians to degrees
     }
 
-  std::cout << "X: " << position.x << "Y: " << position.y << std::endl;
-
   // Move camera
   camera.target.x += (position.x - camera.target.x) * 0.25f * deltaTime * cameraSpeed;
   camera.target.y += (position.y - camera.target.y) * 0.25f * deltaTime * cameraSpeed;
 }
 
-void Player::Attack()
+void Player::Attack(Vector2 attackDirection)
 {
-  if(GetTime() - lastTimeFired >= cooldown)
+  if(attackDirection.x != 0 || attackDirection.y != 0)
     {
-      bullets.push_back(PlayerBullet(position, direction));
-      lastTimeFired = GetTime();
+    rotation = atan2(attackDirection.y, attackDirection.x) * RAD2DEG + 90;
+
+    if(GetTime() - lastTimeFired >= cooldown)
+      {
+        bullets.push_back(PlayerBullet(position, attackDirection));
+        lastTimeFired = GetTime();
+      }
     }
 }

@@ -13,7 +13,7 @@ public:
   void Draw();
   void Move(float deltaTime, Vector2 direction);
   void Rotate(float degree);
-  void Attack();
+  void Attack(Vector2 attackDirection);
   Texture2D image;
   Vector2 position;
   Vector2 direction;

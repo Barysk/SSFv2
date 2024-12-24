@@ -15,6 +15,7 @@ private:
   float deltaTime;
   Player player;
   Vector2 playerDirection;
+  Vector2 playerAttackDirection;
   Background background;
 };
 

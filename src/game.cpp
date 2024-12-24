@@ -4,12 +4,14 @@
 Game::Game()
 {
   playerDirection = {0, 0};
+  playerAttackDirection = {0, 0};
   deltaTime = 0.0f;
 }
 
 Game::~Game()
 {
   background.UnloadImages();
+  PlayerBullet::UnloadImage();
 }
 
 void Game::Update()
@@ -21,6 +23,22 @@ void Game::Update()
   HandleInput();
 
   // Player bullets
+
+  // delete inactive bullets
+  for (auto it = player.bullets.begin(); it != player.bullets.end();)
+  {
+      // If the bullet's timeActive is >= 1.5 seconds, remove it
+      if (it->ShouldDelete())
+      {
+          it = player.bullets.erase(it); // Erase the bullet and move to the next
+      }
+      else
+      {
+          ++it; // Otherwise, just move to the next bullet
+      }
+  }
+
+  // Move active bullets
   for(auto& bullet: player.bullets)
     bullet.Move(deltaTime);
 
@@ -44,13 +62,15 @@ void Game::Draw()
 
   // Player
   BeginMode2D(player.camera);
-  player.Draw();
+    // Drawing all the projectiles
+    for(auto& bullet: player.bullets)
+      bullet.Draw();
+    player.Draw();
   EndMode2D();
   DrawText("Use WASD to move", 10, 10, 20, DARKGRAY);
-  DrawText("Use SPACE to attack", 10, 30, 20, DARKGRAY);
+  DrawText("Use OKL: to attack", 10, 30, 20, DARKGRAY);
 
-  for(auto& bullet: player.bullets)
-    bullet.Draw();
+
 
 
   // Enemy
@@ -58,9 +78,25 @@ void Game::Draw()
 
 void Game::HandleInput()
 {
-  if(IsKeyDown(KEY_SPACE))
-     player.Attack();
+  // Attack
+  if(IsKeyDown(KEY_K))
+    {
+      playerAttackDirection.x += -1;
+    }
+  if(IsKeyDown(KEY_SEMICOLON))
+    {
+      playerAttackDirection.x += 1;
+    }
+  if(IsKeyDown(KEY_O))
+    {
+      playerAttackDirection.y += -1;
+    }
+  if(IsKeyDown(KEY_L))
+    {
+      playerAttackDirection.y += 1;
+    }
 
+  // Movement
   if(IsKeyDown(KEY_A))
     {
       playerDirection.x += -1;
@@ -78,11 +114,12 @@ void Game::HandleInput()
       playerDirection.y += 1;
     }
 
-  // Function to move player
+  // Functions to move player and attack
   player.Move(deltaTime, playerDirection);
+  player.Attack(playerAttackDirection);
   // Function to move background
   background.Move(deltaTime, playerDirection);
-  // Resetting Direction
+  // Resetting Directions
   playerDirection = {0, 0};
-
+  playerAttackDirection = {0, 0};
 }
