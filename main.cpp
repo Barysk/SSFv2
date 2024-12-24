@@ -62,9 +62,11 @@ int main(void)
 
         // Draw render texture to screen, properly scaled
         // DrawTexturePro(Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint);
-        DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },
-                       (Rectangle){ (GetScreenWidth() - ((float)gameScreenWidth*scale))*0.5f, (GetScreenHeight() - ((float)gameScreenHeight*scale))*0.5f,
-                       (float)gameScreenWidth*scale, (float)gameScreenHeight*scale }, (Vector2){ 0, 0 }, 0.0f, WHITE);
+        Rectangle sRect = {0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height};
+        Rectangle dRect = {(GetScreenWidth() - ((float)gameScreenWidth*scale))*0.5f,
+                            (GetScreenHeight() - ((float)gameScreenHeight*scale))*0.5f,
+                            (float)gameScreenWidth*scale, (float)gameScreenHeight*scale};
+        DrawTexturePro(target.texture, sRect, dRect, (Vector2){0, 0}, 0.0f, WHITE);
       EndDrawing();
 
     }

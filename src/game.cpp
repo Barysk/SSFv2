@@ -35,7 +35,8 @@ void Game::Draw()
   BeginMode2D(player.camera);
   player.Draw();
   EndMode2D();
-  DrawText("Use WASD to move", 10, 10, 20, DARKGRAY);
+  //DrawText("Use WASD to move", 10, 10, 20, DARKGRAY);
+  //DrawText("Use WASD to move", 10, 30, 20, DARKGRAY);
 
   // Enemy
 }
@@ -62,7 +63,9 @@ void Game::HandleInput()
 
   // Function to move player
   player.Move(playerDirection);
+  // Function to move background
   background.Move(playerDirection);
+  // Resetting Direction
   playerDirection = {0, 0};
 
 }

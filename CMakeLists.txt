@@ -9,7 +9,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(SSF2 main.cpp
     include/player.h src/player.cpp
     include/game.h src/game.cpp
-    include/background.h src/background.cpp)
+    include/background.h src/background.cpp
+    include/playerbullet.h src/playerbullet.cpp)
 
 target_link_libraries(SSF2 raylib)
 
