@@ -1,12 +1,16 @@
 #include "../include/player.h"
+#include <iostream>
 
 Player::Player()
 {
   image = LoadTexture("assets/sprites/player/pTest.png");
   position.x = (GetScreenWidth() - image.width)/2;
   position.y = (GetScreenHeight() - image.width)/2;
-  rotation = 0;
+  rotation = 0.0f;
   speed = 100;
+  health = 3;
+  lastTimeFired = 0.0f;
+  cooldown = 0.3f;
 
   // Camera Init
   camera = {0}; // reseting any settings
@@ -24,6 +28,8 @@ Player::~Player()
 
 void Player::Draw()
 {
+  DrawCircle(position.x, position.y, 5.0, BLUE);
+
   // Define the source rectangle (entire texture) *Consider later usage of static_cast<float>
   Rectangle sRect = {0, 0, (float)image.width, (float)image.height};
 
@@ -38,11 +44,10 @@ void Player::Draw()
 }
 
 
-void Player::Move(Vector2 direction, float deltaTime)
+void Player::Move(float deltaTime, Vector2 direction)
 {
   this->direction.x = direction.x;
   this->direction.y = direction.y;
-
 
   // Normalizing Vector2: Vector2 length is needed
   float magnitude = sqrt((this->direction.x * this->direction.x) +
@@ -64,10 +69,18 @@ void Player::Move(Vector2 direction, float deltaTime)
       rotation = atan2(this->direction.y, this->direction.x) * RAD2DEG + 90; // Convert radians to degrees
     }
 
+  std::cout << "X: " << position.x << "Y: " << position.y << std::endl;
+
   // Move camera
   camera.target.x += (position.x - camera.target.x) * 0.25f * deltaTime * cameraSpeed;
   camera.target.y += (position.y - camera.target.y) * 0.25f * deltaTime * cameraSpeed;
 }
 
-void Update();
-void Attack();
+void Player::Attack()
+{
+  if(GetTime() - lastTimeFired >= cooldown)
+    {
+      bullets.push_back(PlayerBullet(position, direction));
+      lastTimeFired = GetTime();
+    }
+}

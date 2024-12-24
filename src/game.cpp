@@ -17,8 +17,12 @@ void Game::Update()
   // Updating deltaTime
   deltaTime = GetFrameTime();
 
-  // Input
+  // Player Input
   HandleInput();
+
+  // Player bullets
+  for(auto& bullet: player.bullets)
+    bullet.Move(deltaTime);
 
   // Background
   background.Update();
@@ -42,14 +46,20 @@ void Game::Draw()
   BeginMode2D(player.camera);
   player.Draw();
   EndMode2D();
-  //DrawText("Use WASD to move", 10, 10, 20, DARKGRAY);
-  //DrawText("Use WASD to move", 10, 30, 20, DARKGRAY);
+  DrawText("Use WASD to move", 10, 10, 20, DARKGRAY);
+  DrawText("Use SPACE to attack", 10, 30, 20, DARKGRAY);
+
+  for(auto& bullet: player.bullets)
+    bullet.Draw();
+
 
   // Enemy
 }
 
 void Game::HandleInput()
 {
+  if(IsKeyDown(KEY_SPACE))
+     player.Attack();
 
   if(IsKeyDown(KEY_A))
     {
@@ -69,9 +79,9 @@ void Game::HandleInput()
     }
 
   // Function to move player
-  player.Move(playerDirection, deltaTime);
+  player.Move(deltaTime, playerDirection);
   // Function to move background
-  background.Move(playerDirection, deltaTime);
+  background.Move(deltaTime, playerDirection);
   // Resetting Direction
   playerDirection = {0, 0};
 

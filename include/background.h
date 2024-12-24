@@ -9,7 +9,7 @@ public:
   void UnloadImages();
   void Update();
   void Draw();
-  void Move(Vector2 direction, float deltaTime);
+  void Move(float deltaTime, Vector2 direction);
 private:
   void drawBackground(Texture2D& image, Vector2 offset);
   Texture2D background;

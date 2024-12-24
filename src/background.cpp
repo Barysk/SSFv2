@@ -57,7 +57,7 @@ void Background::Draw()
 
 }
 
-void Background::Move(Vector2 direction, float deltaTime)
+void Background::Move(float deltaTime, Vector2 direction)
 {
   // Normalizing Vector2: Vector2 length is needed
   float magnitude = sqrt((direction.x * direction.x) +

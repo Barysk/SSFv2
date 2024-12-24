@@ -7,10 +7,10 @@ class PlayerBullet
 {
 public:
   Texture2D image;
-  PlayerBullet(Vector2 position, Vector2 direction, float speed);
-  void Update();
+  PlayerBullet(Vector2 position, Vector2 direction);
+  void UnloadImage();
+  void Move(float deltaTime);
   void Draw();
-  bool isOnScreen;
 private:
   Vector2 position;
   Vector2 direction;

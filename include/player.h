@@ -1,6 +1,8 @@
 #pragma once
 #include <raylib.h>
+#include <vector>
 #include <raymath.h>
+#include "../include/playerbullet.h"
 
 class Player
 {
@@ -9,20 +11,19 @@ public:
   ~Player();
   Camera2D camera;
   void Draw();
-  void Update();
-  void Move(Vector2 direction, float deltaTime);
+  void Move(float deltaTime, Vector2 direction);
   void Rotate(float degree);
   void Attack();
-
-private:
+  Texture2D image;
   Vector2 position;
   Vector2 direction;
-  Texture2D image;
+  std::vector<PlayerBullet> bullets;
+private:
   float rotation;
+  float lastTimeFired;
   int speed;
   int health;
+  float cooldown;
   int cameraSpeed;
-
-
 };
 
