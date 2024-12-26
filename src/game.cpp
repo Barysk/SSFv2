@@ -5,6 +5,9 @@ Game::Game()
   playerDirection = {0, 0};
   playerAttackDirection = {0, 0};
   deltaTime = 0.0f;
+  spawnRadius = 250.0f;
+  SpawnEnemies(1, 100);
+
 }
 
 Game::~Game()
@@ -24,17 +27,17 @@ void Game::Update()
 
   // delete inactive bullets
   for (auto it = player.bullets.begin(); it != player.bullets.end();)
-  {
+    {
       // If the bullet's timeActive is >= 1.5 seconds, remove it
       if (it->ShouldDelete())
-      {
+        {
           it = player.bullets.erase(it); // Erase the bullet and move to the next
-      }
+        }
       else
-      {
+        {
           ++it; // Otherwise, just move to the next bullet
-      }
-  }
+        }
+    }
 
   // Move active bullets
   for(auto& bullet: player.bullets)
@@ -46,8 +49,8 @@ void Game::Update()
   // Savepoint
 
   // Enemy
-  enemy.Move(deltaTime, player.position);
-
+  for(auto& enemy: enemies)
+    enemy.Move(deltaTime, player.position);
 }
 
 void Game::Draw()
@@ -64,16 +67,14 @@ void Game::Draw()
     for(auto& bullet: player.bullets)
       bullet.Draw();
     player.Draw();
-    enemy.Draw();
+
+    // Enemy
+    for(auto& enemy: enemies)
+      enemy.Draw();
   EndMode2D();
+
   DrawText("Use WASD to move", 10, 10, 20, DARKGRAY);
   DrawText("Use OKL: to attack", 10, 30, 20, DARKGRAY);
-
-
-
-
-
-  // Enemy
 }
 
 void Game::HandleInput()
@@ -122,4 +123,22 @@ void Game::HandleInput()
   // Resetting Directions
   playerDirection = {0, 0};
   playerAttackDirection = {0, 0};
+}
+
+void Game::SpawnEnemies(int type, int number)
+{
+  //TraceLog(LOG_INFO, "spawnRadius = %.2f", spawnRadius);
+
+    for (int i = 0; i < number; i++)
+    {
+        // Generate a random angle in radians
+        float angle = GetRandomValue(0, 360) * DEG2RAD;
+
+        // Calculate x and y coordinates on the circle
+        float x = player.position.x + spawnRadius * cos(angle);
+        float y = player.position.y + spawnRadius * sin(angle);
+
+        // Add the new enemy to the list
+        enemies.push_back(Enemy({x, y}, type));
+    }
 }

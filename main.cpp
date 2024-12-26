@@ -1,6 +1,5 @@
 #include <raylib.h>
 #include "include/game.h"
-#include <iostream>
 
 
 #define MAX(a, b) ((a)>(b)? (a) : (b))
@@ -25,7 +24,7 @@ int main(void)
   RenderTexture2D target = LoadRenderTexture(gameScreenWidth, gameScreenHeight);
   SetTextureFilter(target.texture, TEXTURE_FILTER_POINT);  // Texture scale filter to use
 
-  SetTargetFPS(20);
+  SetTargetFPS(144);
 
   Game game;
 

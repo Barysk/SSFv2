@@ -6,16 +6,17 @@ class Enemy
 {
 public:
   static Texture2D image;
-  Enemy();
+  Enemy(Vector2 position, int type);
   static void UnloadImages();
   void Move(float deltaTime, Vector2 playerPosition);
   void Draw();
 private:
   Vector2 position;
   Vector2 direction;
-  float playerDistance;
-  int speed;
+  int playerDistance;
+  float speed;
   float rotation;
+  int type; // there will be 5 different
 };
 
 

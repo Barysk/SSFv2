@@ -1,5 +1,4 @@
 #include "../include/playerbullet.h"
-#include <iostream>
 
 Texture2D PlayerBullet::image = {0};
 
