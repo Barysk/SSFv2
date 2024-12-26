@@ -1,7 +1,7 @@
 #pragma once
 #include "../include/player.h"
 #include "../include/background.h"
-
+#include "../include/enemy.h"
 
 class Game
 {
@@ -14,6 +14,7 @@ public:
 private:
   float deltaTime;
   Player player;
+  Enemy enemy;
   Vector2 playerDirection;
   Vector2 playerAttackDirection;
   Background background;

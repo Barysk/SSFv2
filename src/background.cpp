@@ -10,9 +10,9 @@ Background::Background()
 
   // parallax settings
   offset = {0, 0};
-  parallaxStrengthBack = 0.1f;
-  parallaxStrengthMid = 0.5f;
-  parallaxStrengthFor = 0.9f;
+  parallaxStrengthBack = 0.2f;
+  parallaxStrengthMid = 0.4f;
+  parallaxStrengthFor = 0.8f;
   parallaxSpeed = 200.0f;
   offsetBack = {0, 0};
   offsetMid = {0, 0};

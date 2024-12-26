@@ -1,6 +1,5 @@
 #include "../include/game.h"
 
-
 Game::Game()
 {
   playerDirection = {0, 0};
@@ -12,6 +11,7 @@ Game::~Game()
 {
   background.UnloadImages();
   PlayerBullet::UnloadImage();
+  Enemy::UnloadImages();
 }
 
 void Game::Update()
@@ -21,8 +21,6 @@ void Game::Update()
 
   // Player Input
   HandleInput();
-
-  // Player bullets
 
   // delete inactive bullets
   for (auto it = player.bullets.begin(); it != player.bullets.end();)
@@ -47,9 +45,8 @@ void Game::Update()
 
   // Savepoint
 
-  // Player
-
   // Enemy
+  enemy.Move(deltaTime, player.position);
 
 }
 
@@ -62,13 +59,16 @@ void Game::Draw()
 
   // Player
   BeginMode2D(player.camera);
+
     // Drawing all the projectiles
     for(auto& bullet: player.bullets)
       bullet.Draw();
     player.Draw();
+    enemy.Draw();
   EndMode2D();
   DrawText("Use WASD to move", 10, 10, 20, DARKGRAY);
   DrawText("Use OKL: to attack", 10, 30, 20, DARKGRAY);
+
 
 
 

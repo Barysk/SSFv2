@@ -10,7 +10,8 @@ add_executable(SSF2 main.cpp
     include/player.h src/player.cpp
     include/game.h src/game.cpp
     include/background.h src/background.cpp
-    include/playerbullet.h src/playerbullet.cpp)
+    include/playerbullet.h src/playerbullet.cpp
+    include/enemy.h src/enemy.cpp)
 
 target_link_libraries(SSF2 raylib)
 
