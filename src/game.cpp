@@ -6,10 +6,10 @@ Game::Game()
   playerAttackDirection = {0, 0};
   deltaTime = 0.0f;
   spawnRadius = 250.0f;
-  SpawnEnemies(1, 5);
-  SpawnEnemies(2, 4);
-  SpawnEnemies(3, 3);
-  SpawnEnemies(4, 2);
+  SpawnEnemies(1, 1);
+  SpawnEnemies(2, 1);
+  SpawnEnemies(3, 1);
+  SpawnEnemies(4, 1);
   SpawnEnemies(5, 1);
 
 }

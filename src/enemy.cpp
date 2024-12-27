@@ -32,7 +32,7 @@ Enemy::Enemy(Vector2 position, int type)
   this->position = position;
   this->type = type;
   speed = GetRandomValue(105, 115);
-  bulletSpeed = GetRandomValue(105, 115);
+  bulletSpeed = speed+10;
   direction = {0, 0};
   rotation = 0.0;
   lastTimeFired = 0.0f;
@@ -40,16 +40,16 @@ Enemy::Enemy(Vector2 position, int type)
 
   switch (this->type) {
     case 1:
-      cooldown = 0.2f;
+      cooldown = 0.32f;
       break;
     case 2:
-      cooldown = 0.3f;
+      cooldown = 0.32f;
       break;
     case 3:
-      cooldown = 0.07f;
+      cooldown = 0.64f;
       break;
     case 4:
-      cooldown = 0.4f;
+      cooldown = 0.16f;
       if(GetRandomValue(0, 1) == 1)
         {
           directionOffset = 35.0f;
@@ -62,7 +62,7 @@ Enemy::Enemy(Vector2 position, int type)
         }
       break;
     case 5:
-      cooldown = 0.3f;
+      cooldown = 0.32f;
       directionOffset = 0.0f;
       incrementDirectionOffset = (bool)GetRandomValue(0,1);
       playerDistance += 20;
@@ -197,7 +197,7 @@ void Enemy::Attack()
             }
           for(int i = 0; i < 360; i += 45)
             {
-              bullets.push_back(EnemyBullet(position, Vector2Rotate(direction, (i + directionOffset) * DEG2RAD), (speed/2 + (float)bulletSpeed) / 2, bulletRotation, type));
+              bullets.push_back(EnemyBullet(position, Vector2Rotate(direction, (i + directionOffset) * DEG2RAD), (float)bulletSpeed / 2, bulletRotation, type));
             }
           lastTimeFired = GetTime();
         }
