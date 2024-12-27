@@ -6,10 +6,10 @@ Game::Game()
   playerAttackDirection = {0, 0};
   deltaTime = 0.0f;
   spawnRadius = 250.0f;
-  SpawnEnemies(1, 1);
-  SpawnEnemies(2, 1);
-  SpawnEnemies(3, 1);
-  SpawnEnemies(4, 1);
+  //SpawnEnemies(1, 1);
+  //SpawnEnemies(2, 1);
+  //SpawnEnemies(3, 1);
+  //SpawnEnemies(4, 1);
   SpawnEnemies(5, 1);
 
 }
@@ -136,39 +136,23 @@ void Game::HandleInput()
 {
   // Attack
   if(IsKeyDown(KEY_LEFT))
-    {
-      playerAttackDirection.x += -1;
-    }
+    playerAttackDirection.x += -1;
   if(IsKeyDown(KEY_RIGHT))
-    {
-      playerAttackDirection.x += 1;
-    }
+    playerAttackDirection.x += 1;
   if(IsKeyDown(KEY_UP))
-    {
-      playerAttackDirection.y += -1;
-    }
+    playerAttackDirection.y += -1;
   if(IsKeyDown(KEY_DOWN))
-    {
-      playerAttackDirection.y += 1;
-    }
+    playerAttackDirection.y += 1;
 
   // Movement
   if(IsKeyDown(KEY_A))
-    {
-      playerDirection.x += -1;
-    }
+    playerDirection.x += -1;
   if(IsKeyDown(KEY_D))
-    {
-      playerDirection.x += 1;
-    }
+    playerDirection.x += 1;
   if(IsKeyDown(KEY_W))
-    {
-      playerDirection.y += -1;
-    }
+    playerDirection.y += -1;
   if(IsKeyDown(KEY_S))
-    {
-      playerDirection.y += 1;
-    }
+    playerDirection.y += 1;
 
   // Functions to move player and attack
   player.Move(deltaTime, playerDirection);
@@ -195,5 +179,26 @@ void Game::SpawnEnemies(int type, int number)
 
       // Add the new enemy to the list
       enemies.push_back(Enemy({x, y}, type));
+    }
+}
+
+void Game::CheckForCollisions()
+{
+  // PlayerBullet collision with Enemies
+  for(auto& bullet: player.bullets)
+    {
+      auto it = enemies.begin();
+      while(it != enemies.end())
+        {
+          if(CheckCollisionCircles(bullet.GetCollisionPosition(), bullet.GetCollisionRadius(), it->GetCollisionPosition(), it->GetCollisionRadius()))
+            {
+              it = enemies.erase(it);
+              bullet.shouldBeDestroyed = true;
+            }
+          else
+            {
+              ++it;
+            }
+        }
     }
 }

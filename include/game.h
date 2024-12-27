@@ -11,8 +11,8 @@ public:
   void Update();
   void Draw();
   void HandleInput();
-  //void SpawnEnemies(int type1, int type2, int type3, int type4, int type5);
   void SpawnEnemies(int type, int number);
+  void CheckForCollisions();
 private:
   float spawnRadius;
   float deltaTime;

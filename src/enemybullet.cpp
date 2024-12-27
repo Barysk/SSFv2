@@ -74,6 +74,8 @@ void EnemyBullet::Move(float deltaTime, int enemyType)
       position += Vector2Rotate(direction, (float)rotationOffset * DEG2RAD) * speed * deltaTime;
       if(rotationOffset < 90)
         rotationOffset += 1;
+      else
+        bulletRotation = -1;
     }
   else if (bulletRotation < 0)
     {
@@ -81,6 +83,8 @@ void EnemyBullet::Move(float deltaTime, int enemyType)
       position += Vector2Rotate(direction, (float)rotationOffset * DEG2RAD) * speed * deltaTime;
       if(rotationOffset > -90)
         rotationOffset -= 1;
+      else
+        bulletRotation = 1;
     }
 
 }
@@ -91,10 +95,24 @@ void EnemyBullet::Draw()
   Rectangle dRect = {position.x, position.y, (float)images[type-1].width, (float)images[type-1].height};
   Vector2 origin = {images[type-1].width / 2.0f, images[type-1].height / 2.0f};
   DrawTexturePro(images[type-1], sRect, dRect, origin, 0.0f, WHITE);
+
+  // Hurtbox/Hitbox
+  // DrawCircleV(position, 2, BLUE);
+  // DrawCircleV(position, 1, WHITE);
 }
 
 // Check if the bullet should be removed (after 1.5 seconds)
 bool EnemyBullet::ShouldDelete()
 {
   return timeActive >= timeToLive;
+}
+
+Vector2 EnemyBullet::GetCollisionPosition()
+{
+  return position;
+}
+
+float EnemyBullet::GetCollisionRadius()
+{
+  return 1.0f;
 }

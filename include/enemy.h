@@ -13,6 +13,8 @@ public:
   void Move(float deltaTime, Vector2 playerPosition);
   void Draw();
   void Attack();
+  Vector2 GetCollisionPosition();
+  float GetCollisionRadius();
   std::vector<EnemyBullet> bullets;
   int type;
 private:

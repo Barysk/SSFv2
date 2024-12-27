@@ -130,6 +130,10 @@ void Enemy::Draw()
   Rectangle dRect = {position.x, position.y, (float)images[type-1].width, (float)images[type-1].height};
   Vector2 origin = { images[type-1].width / 2.0f, images[type-1].height / 2.0f };
   DrawTexturePro(images[type-1], sRect, dRect, origin, rotation, WHITE);
+
+  // Hurtbox
+  //DrawCircleV(position, 4, BLUE);
+  //DrawCircleV(position, 3, WHITE);
 }
 
 void Enemy::Attack()
@@ -204,7 +208,14 @@ void Enemy::Attack()
     default:
       break;
     }
+}
 
+Vector2 Enemy::GetCollisionPosition()
+{
+  return position;
+}
 
-
+float Enemy::GetCollisionRadius()
+{
+  return 3.0f;
 }

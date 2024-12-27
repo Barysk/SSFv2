@@ -38,13 +38,18 @@ void Player::Draw()
 
   // Draw the texture with rotation
   DrawTexturePro(image, sRect, dRect, origin, rotation, WHITE);
+
+
+  // Hurtbox
+  DrawCircleV(position, 2, RED);
+  DrawCircleV(position, 1, WHITE);
+
 }
 
 
 void Player::Move(float deltaTime, Vector2 direction)
 {
-  this->direction.x = direction.x;
-  this->direction.y = direction.y;
+  this->direction = direction;
 
   // Normalizing Vector2: Vector2 length is needed
   float magnitude = sqrt((this->direction.x * this->direction.x) +
@@ -83,4 +88,14 @@ void Player::Attack(Vector2 attackDirection)
         lastTimeFired = GetTime();
       }
     }
+}
+
+Vector2 Player::GetCollisionPosition()
+{
+  return position;
+}
+
+float Player::GetCollisionRadius()
+{
+  return 1.0f;
 }

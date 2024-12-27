@@ -9,6 +9,7 @@ PlayerBullet::PlayerBullet(Vector2 position, Vector2 direction)
     image = LoadTexture("assets/sprites/player/playerBullet.png");
   this->position = position;
   this->direction = direction;
+  shouldBeDestroyed = false;
 
   // Normalizing Vector2: Vector2 length is needed
   float magnitude = sqrt((this->direction.x * this->direction.x) +
@@ -55,11 +56,28 @@ void PlayerBullet::Draw()
 
   // Draw the texture with rotation
   DrawTexturePro(image, sRect, dRect, origin, rotation, WHITE);
+
+  // Hitbox
+  //DrawCircleV(position, 3.0f, RED);
+  //DrawCircleV(position, 2.0f, WHITE);
 }
 
 // Check if the bullet should be removed (after 1.5 seconds)
 bool PlayerBullet::ShouldDelete()
 {
-  return timeActive >= timeToLive;
+  if(timeActive >= timeToLive || shouldBeDestroyed)
+    return true;
+  else
+    return false;
+}
+
+Vector2 PlayerBullet::GetCollisionPosition()
+{
+  return position;
+}
+
+float PlayerBullet::GetCollisionRadius()
+{
+  return 2.0f;
 }
 

@@ -49,6 +49,7 @@ int main(void)
 
       //game.HandleInput();
       game.Update();
+      game.CheckForCollisions();
 
       // Draw everything in the render texture, note this will not be rendered on screen, yet
       BeginTextureMode(target);

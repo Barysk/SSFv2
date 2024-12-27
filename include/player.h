@@ -13,6 +13,8 @@ public:
   void Move(float deltaTime, Vector2 direction);
   void Rotate(float degree);
   void Attack(Vector2 attackDirection);
+  Vector2 GetCollisionPosition();
+  float GetCollisionRadius();
   Camera2D camera;
   std::vector<PlayerBullet> bullets;
   Texture2D image;
