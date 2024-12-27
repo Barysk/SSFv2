@@ -12,10 +12,10 @@ public:
   static void UnloadImages();
   void Move(float deltaTime, Vector2 playerPosition);
   void Draw();
-  void Attack();
+  void Attack(std::vector<EnemyBullet>& bullets);
   Vector2 GetCollisionPosition();
   float GetCollisionRadius();
-  std::vector<EnemyBullet> bullets;
+  //std::vector<EnemyBullet> bullets;
   int type;
 private:
   Vector2 position;

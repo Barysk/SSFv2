@@ -8,7 +8,7 @@ public:
   static Texture2D images[5];
   EnemyBullet(Vector2 position, Vector2 direction, float speed, int bulletRotation, int type);
   static void UnloadImage();
-  void Move(float deltaTime, int enemyType);
+  void Move(float deltaTime);
   void Draw();
   bool ShouldDelete();
   Vector2 GetCollisionPosition();

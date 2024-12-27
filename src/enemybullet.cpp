@@ -61,7 +61,7 @@ void EnemyBullet::UnloadImage()
     }
 }
 
-void EnemyBullet::Move(float deltaTime, int enemyType)
+void EnemyBullet::Move(float deltaTime)
 {
   if(bulletRotation == 0)
     {

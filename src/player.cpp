@@ -76,7 +76,7 @@ void Player::Move(float deltaTime, Vector2 direction)
   camera.target.y += (position.y - camera.target.y) * 0.25f * deltaTime * cameraSpeed;
 }
 
-void Player::Attack(Vector2 attackDirection)
+void Player::Attack(Vector2 attackDirection, std::vector<PlayerBullet>& bullets)
 {
   if(attackDirection.x != 0 || attackDirection.y != 0)
     {

@@ -17,7 +17,9 @@ private:
   float spawnRadius;
   float deltaTime;
   Player player;
+  std::vector<PlayerBullet> playerBullets;
   std::vector<Enemy> enemies;
+  std::vector<EnemyBullet> enemyBullets;
   Vector2 playerDirection;
   Vector2 playerAttackDirection;
   Background background;

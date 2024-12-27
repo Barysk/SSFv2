@@ -6,10 +6,10 @@ Game::Game()
   playerAttackDirection = {0, 0};
   deltaTime = 0.0f;
   spawnRadius = 250.0f;
-  //SpawnEnemies(1, 1);
-  //SpawnEnemies(2, 1);
-  //SpawnEnemies(3, 1);
-  //SpawnEnemies(4, 1);
+  SpawnEnemies(1, 1);
+  SpawnEnemies(2, 1);
+  SpawnEnemies(3, 1);
+  SpawnEnemies(4, 1);
   SpawnEnemies(5, 1);
 
 }
@@ -31,12 +31,12 @@ void Game::Update()
   HandleInput();
 
   // delete inactive player bullets
-  for (auto it = player.bullets.begin(); it != player.bullets.end();)
+  for (auto it = playerBullets.begin(); it != playerBullets.end();)
     {
       // If the bullet's timeActive is >= 1.5 seconds, remove it
       if (it->ShouldDelete())
         {
-          it = player.bullets.erase(it); // Erase the bullet and move to the next
+          it = playerBullets.erase(it); // Erase the bullet and move to the next
         }
       else
         {
@@ -45,7 +45,7 @@ void Game::Update()
     }
 
   // Move active player bullets
-  for(auto& bullet: player.bullets)
+  for(auto& bullet: playerBullets)
     bullet.Move(deltaTime);
 
   // Background
@@ -57,42 +57,24 @@ void Game::Update()
   for(auto& enemy: enemies)
     {
       enemy.Move(deltaTime, player.position);
-      enemy.Attack();
+      enemy.Attack(enemyBullets);
     }
 
-  for(auto& enemy: enemies)
+  // Delete old enemy bullets
+  for(auto it = enemyBullets.begin(); it != enemyBullets.end();)
     {
-      for(auto it = enemy.bullets.begin(); it != enemy.bullets.end();)
-        {
-          if(it->ShouldDelete())
-            it = enemy.bullets.erase(it);
-          else
-            ++it;
-        }
+      if(it->ShouldDelete())
+        it = enemyBullets.erase(it);
+      else
+        ++it;
     }
-
-  // delete inactive enemy bullets
-  // for (auto it = player.bullets.begin(); it != player.bullets.end();)
-  //   {
-  //     // If the bullet's timeActive is >= 1.5 seconds, remove it
-  //     if (it->ShouldDelete())
-  //       {
-  //         it = player.bullets.erase(it); // Erase the bullet and move to the next
-  //       }
-  //     else
-  //       {
-  //         ++it; // Otherwise, just move to the next bullet
-  //       }
-  //   }
 
   // Move active enemy bullets
-  for(auto& enemy: enemies)
+  for(auto& bullet: enemyBullets)
     {
-      for(auto& bullet: enemy.bullets)
-        {
-          bullet.Move(deltaTime, enemy.type);
-        }
+      bullet.Move(deltaTime);
     }
+
 
 }
 
@@ -107,16 +89,14 @@ void Game::Draw()
   BeginMode2D(player.camera);
 
     // Drawing player bullets
-    for(auto& bullet: player.bullets)
+    for(auto& bullet: playerBullets)
       bullet.Draw();
 
     //Drawing enemy bullets
-    for(auto& enemy: enemies)
+
+    for(auto& bullet: enemyBullets)
       {
-        for(auto& bullet: enemy.bullets)
-          {
-            bullet.Draw();
-          }
+        bullet.Draw();
       }
 
     // Drawing player
@@ -156,7 +136,7 @@ void Game::HandleInput()
 
   // Functions to move player and attack
   player.Move(deltaTime, playerDirection);
-  player.Attack(playerAttackDirection);
+  player.Attack(playerAttackDirection, playerBullets);
   // Function to move background
   background.Move(deltaTime, playerDirection);
   // Resetting Directions
@@ -185,7 +165,7 @@ void Game::SpawnEnemies(int type, int number)
 void Game::CheckForCollisions()
 {
   // PlayerBullet collision with Enemies
-  for(auto& bullet: player.bullets)
+  for(auto& bullet: playerBullets)
     {
       auto it = enemies.begin();
       while(it != enemies.end())

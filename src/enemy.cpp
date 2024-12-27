@@ -136,7 +136,7 @@ void Enemy::Draw()
   //DrawCircleV(position, 3, WHITE);
 }
 
-void Enemy::Attack()
+void Enemy::Attack(std::vector<EnemyBullet>& bullets)
 {
   switch (type) {
     case 1:

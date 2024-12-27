@@ -4,6 +4,7 @@
 #include <raymath.h>
 #include "../include/playerbullet.h"
 
+
 class Player
 {
 public:
@@ -12,11 +13,11 @@ public:
   void Draw();
   void Move(float deltaTime, Vector2 direction);
   void Rotate(float degree);
-  void Attack(Vector2 attackDirection);
+  void Attack(Vector2 attackDirection, std::vector<PlayerBullet>& bullets);
   Vector2 GetCollisionPosition();
   float GetCollisionRadius();
   Camera2D camera;
-  std::vector<PlayerBullet> bullets;
+  //std::vector<PlayerBullet> bullets;
   Texture2D image;
   Vector2 position;
 private:
