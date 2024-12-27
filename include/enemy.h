@@ -1,22 +1,33 @@
 #pragma once
 #include <raylib.h>
 #include <raymath.h>
+#include <vector>
+#include "../include/enemybullet.h"
 
 class Enemy
 {
 public:
-  static Texture2D image;
+  static Texture2D images[5];
   Enemy(Vector2 position, int type);
   static void UnloadImages();
   void Move(float deltaTime, Vector2 playerPosition);
   void Draw();
+  void Attack();
+  std::vector<EnemyBullet> bullets;
+  int type;
 private:
   Vector2 position;
   Vector2 direction;
+  float directionOffset;
+  bool incrementDirectionOffset;
   int playerDistance;
-  float speed;
+  float lastTimeFired;
+  float cooldown;
+  int speed;
+  int bulletSpeed;
+  int bulletRotation;
   float rotation;
-  int type; // there will be 5 different
+
 };
 
 

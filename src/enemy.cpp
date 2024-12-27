@@ -1,22 +1,85 @@
 #include "../include/enemy.h"
 
-Texture2D Enemy::image = {0};
+Texture2D Enemy::images[5] = {0};
 
 Enemy::Enemy(Vector2 position, int type)
 {
-  if(image.id == 0)
-    image = LoadTexture("assets/sprites/enemy/enemy_1.png");
+
+  if(images[type -1].id == 0)
+    {
+      switch (type)
+        {
+        case 1:
+          images[0] = LoadTexture("assets/sprites/enemy/enemy_1.png");
+          break;
+        case 2:
+          images[1] = LoadTexture("assets/sprites/enemy/enemy_2.png");
+          break;
+        case 3:
+          images[2] = LoadTexture("assets/sprites/enemy/enemy_3.png");
+          break;
+        case 4:
+          images[3] = LoadTexture("assets/sprites/enemy/enemy_4.png");
+          break;
+        case 5:
+          images[4] = LoadTexture("assets/sprites/enemy/enemy_5.png");
+          break;
+        default:
+          break;
+        }
+    }
+
   this->position = position;
   this->type = type;
   speed = GetRandomValue(105, 115);
+  bulletSpeed = GetRandomValue(105, 115);
   direction = {0, 0};
   rotation = 0.0;
+  lastTimeFired = 0.0f;
   playerDistance = GetRandomValue(75, 100);
+
+  switch (this->type) {
+    case 1:
+      cooldown = 0.2f;
+      break;
+    case 2:
+      cooldown = 0.3f;
+      break;
+    case 3:
+      cooldown = 0.07f;
+      break;
+    case 4:
+      cooldown = 0.4f;
+      if(GetRandomValue(0, 1) == 1)
+        {
+          directionOffset = 35.0f;
+          incrementDirectionOffset = false;
+        }
+      else
+        {
+          directionOffset = -35.0f;
+          incrementDirectionOffset = true;
+        }
+      break;
+    case 5:
+      cooldown = 0.3f;
+      directionOffset = 0.0f;
+      incrementDirectionOffset = (bool)GetRandomValue(0,1);
+      playerDistance += 20;
+      bulletRotation = GetRandomValue(-1, 1);
+      break;
+    default:
+      cooldown = 1.0f;;
+    }
+
 }
 
 void Enemy::UnloadImages()
 {
-  UnloadTexture(image);
+  for(int i = 0; i < 4; i++)
+    {
+      UnloadTexture(images[i]);
+    }
 }
 
 void Enemy::Move(float deltaTime, Vector2 playerPosition)
@@ -56,15 +119,92 @@ void Enemy::Move(float deltaTime, Vector2 playerPosition)
         rotation = atan2(direction.y, direction.x) * RAD2DEG + 90; // Convert radians to degrees
       }
 
-    position.x += direction.x * speed * deltaTime;
-    position.y += direction.y * speed * deltaTime;
+    position.x += direction.x * (float)speed * deltaTime;
+    position.y += direction.y * (float)speed * deltaTime;
 }
 
 
 void Enemy::Draw()
 {
-  Rectangle sRect = {0, 0, (float)image.width, (float)image.height};
-  Rectangle dRect = {position.x, position.y, (float)image.width, (float)image.height};
-  Vector2 origin = { image.width / 2.0f, image.height / 2.0f };
-  DrawTexturePro(image, sRect, dRect, origin, rotation, WHITE);
+  Rectangle sRect = {0, 0, (float)images[type-1].width, (float)images[type-1].height};
+  Rectangle dRect = {position.x, position.y, (float)images[type-1].width, (float)images[type-1].height};
+  Vector2 origin = { images[type-1].width / 2.0f, images[type-1].height / 2.0f };
+  DrawTexturePro(images[type-1], sRect, dRect, origin, rotation, WHITE);
+}
+
+void Enemy::Attack()
+{
+  switch (type) {
+    case 1:
+      if(GetTime() - lastTimeFired >= cooldown)
+        {
+          bullets.push_back(EnemyBullet(position, direction, speed/2 + (float)bulletSpeed, 0, type));
+          lastTimeFired = GetTime();
+        }
+      break;
+    case 2:
+      if(GetTime() - lastTimeFired >= cooldown)
+        {
+          for(int i = -25; i <= 25; i += 25)
+            {
+              bullets.push_back(EnemyBullet(position, Vector2Rotate(direction, i * DEG2RAD), speed/2 + (float)bulletSpeed, 0, type));
+            }
+          lastTimeFired = GetTime();
+        }
+      break;
+    case 3:
+      if(GetTime() - lastTimeFired >= cooldown)
+        {
+          bullets.push_back(EnemyBullet(position, Vector2Rotate(direction, (float)GetRandomValue(-30, 30) * DEG2RAD), (float)bulletSpeed, 0, type));
+          lastTimeFired = GetTime();
+        }
+    case 4:
+      if(GetTime() - lastTimeFired >= cooldown)
+        {
+          if(incrementDirectionOffset)
+            {
+              directionOffset += 5;
+              if(directionOffset >= 35)
+                incrementDirectionOffset = false;
+            }
+          else
+            {
+              directionOffset -= 5;
+              if(directionOffset <= -35)
+                incrementDirectionOffset = true;
+            }
+
+          for(int i = -25; i <= 25; i += 50)
+            {
+              bullets.push_back(EnemyBullet(position, Vector2Rotate(direction, (i + directionOffset) * DEG2RAD), speed/2 + (float)bulletSpeed, 0, type));
+            }
+          lastTimeFired = GetTime();
+        }
+    case 5:
+      if(GetTime() - lastTimeFired >= cooldown && (speed >= -10 && speed <= 10))
+        {
+          if(incrementDirectionOffset)
+            {
+              directionOffset += 15;
+              if(directionOffset >= 45)
+                directionOffset = 0;
+            }
+          else
+            {
+              directionOffset -= 15;
+              if(directionOffset <= -45)
+                directionOffset = 0;
+            }
+          for(int i = 0; i < 360; i += 45)
+            {
+              bullets.push_back(EnemyBullet(position, Vector2Rotate(direction, (i + directionOffset) * DEG2RAD), (speed/2 + (float)bulletSpeed) / 2, bulletRotation, type));
+            }
+          lastTimeFired = GetTime();
+        }
+    default:
+      break;
+    }
+
+
+
 }
