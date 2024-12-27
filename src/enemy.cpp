@@ -5,7 +5,7 @@ Texture2D Enemy::image = {0};
 Enemy::Enemy(Vector2 position, int type)
 {
   if(image.id == 0)
-    image = LoadTexture("assets/sprites/enemy/enemy.png");
+    image = LoadTexture("assets/sprites/enemy/enemy_1.png");
   this->position = position;
   this->type = type;
   speed = GetRandomValue(105, 115);
@@ -31,18 +31,16 @@ void Enemy::Move(float deltaTime, Vector2 playerPosition)
     // If the enemy is closer than playerDistance, move away
     if (distance < playerDistance)
       {
-        if (speed > -10)
-          speed -= 10;
+        if (speed > -10) speed -= 10;
       }
-    else if(distance <= playerDistance + 15 && distance >= playerDistance - 10)
+    else if(distance <= playerDistance + 30 && distance >= playerDistance)
       {
-        if (speed > 0)
-          speed -= 1;
+        if (speed > 0) speed -= 1;
+        if (speed < 0) speed += 1;
       }
     else
       {
-        if (speed < 110)
-          speed += 5;
+        if (speed < 110) speed += 5;
       }
 
     // Normalizing vector

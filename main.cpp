@@ -24,7 +24,7 @@ int main(void)
   RenderTexture2D target = LoadRenderTexture(gameScreenWidth, gameScreenHeight);
   SetTextureFilter(target.texture, TEXTURE_FILTER_POINT);  // Texture scale filter to use
 
-  SetTargetFPS(144);
+  SetTargetFPS(30);
 
   Game game;
 

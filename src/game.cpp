@@ -6,7 +6,7 @@ Game::Game()
   playerAttackDirection = {0, 0};
   deltaTime = 0.0f;
   spawnRadius = 250.0f;
-  SpawnEnemies(1, 100);
+  SpawnEnemies(1, 5);
 
 }
 
@@ -129,16 +129,16 @@ void Game::SpawnEnemies(int type, int number)
 {
   //TraceLog(LOG_INFO, "spawnRadius = %.2f", spawnRadius);
 
-    for (int i = 0; i < number; i++)
+  for (int i = 0; i < number; i++)
     {
-        // Generate a random angle in radians
-        float angle = GetRandomValue(0, 360) * DEG2RAD;
+      // Generate a random angle in radians
+      float angle = GetRandomValue(0, 360) * DEG2RAD;
 
-        // Calculate x and y coordinates on the circle
-        float x = player.position.x + spawnRadius * cos(angle);
-        float y = player.position.y + spawnRadius * sin(angle);
+      // Calculate x and y coordinates on the circle
+      float x = player.position.x + spawnRadius * cos(angle);
+      float y = player.position.y + spawnRadius * sin(angle);
 
-        // Add the new enemy to the list
-        enemies.push_back(Enemy({x, y}, type));
+      // Add the new enemy to the list
+      enemies.push_back(Enemy({x, y}, type));
     }
 }
