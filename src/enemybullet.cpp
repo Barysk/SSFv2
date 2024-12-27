@@ -29,7 +29,7 @@ EnemyBullet::EnemyBullet(Vector2 position, Vector2 direction, float speed, int b
     }
 
   this->type = type;
-
+  shouldBeDestroyed = false;
   //if(image.id == 0)
   //  image = LoadTexture("assets/sprites/enemy/enemyBullet_1.png");
   this->position = position;
@@ -104,7 +104,10 @@ void EnemyBullet::Draw()
 // Check if the bullet should be removed (after 1.5 seconds)
 bool EnemyBullet::ShouldDelete()
 {
-  return timeActive >= timeToLive;
+  if(timeActive >= timeToLive || shouldBeDestroyed)
+    return true;
+  else
+    return false;
 }
 
 Vector2 EnemyBullet::GetCollisionPosition()

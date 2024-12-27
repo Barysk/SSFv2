@@ -9,6 +9,7 @@ PlayerBullet::PlayerBullet(Vector2 position, Vector2 direction)
     image = LoadTexture("assets/sprites/player/playerBullet.png");
   this->position = position;
   this->direction = direction;
+  penetrationStrength = GetRandomValue(1, 3);
   shouldBeDestroyed = false;
 
   // Normalizing Vector2: Vector2 length is needed
@@ -69,6 +70,13 @@ bool PlayerBullet::ShouldDelete()
     return true;
   else
     return false;
+}
+
+void PlayerBullet::Penetrate()
+{
+  penetrationStrength --;
+  if(penetrationStrength <= 0)
+    shouldBeDestroyed = true;
 }
 
 Vector2 PlayerBullet::GetCollisionPosition()

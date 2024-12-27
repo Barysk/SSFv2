@@ -11,6 +11,7 @@ public:
   void Move(float deltaTime);
   void Draw();
   bool ShouldDelete();
+  bool shouldBeDestroyed;
   Vector2 GetCollisionPosition();
   float GetCollisionRadius();
   int type;

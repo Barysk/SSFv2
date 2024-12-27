@@ -13,11 +13,13 @@ public:
   void Draw();
   bool ShouldDelete();
   Vector2 GetCollisionPosition();
+  void Penetrate();
   float GetCollisionRadius();
   bool shouldBeDestroyed;
 private:
   Vector2 position;
   Vector2 direction;
+  int penetrationStrength;
   float timeActive;
   float timeToLive;
   float rotation;

@@ -9,7 +9,7 @@ Player::Player()
   speed = 100;
   health = 3;
   lastTimeFired = 0.0f;
-  cooldown = 0.15f;
+  cooldown = 0.16f;
 
   // Camera Init
   camera = {0}; // reseting any settings
@@ -84,10 +84,27 @@ void Player::Attack(Vector2 attackDirection, std::vector<PlayerBullet>& bullets)
 
     if(GetTime() - lastTimeFired >= cooldown)
       {
-        bullets.push_back(PlayerBullet(position, attackDirection));
+        bullets.push_back(PlayerBullet(position, Vector2Rotate(attackDirection, GetRandomValue(-16, 16) * DEG2RAD)));
         lastTimeFired = GetTime();
       }
     }
+}
+
+void Player::SetHealth(int value)
+{
+  health = value;
+}
+
+int Player::GetHealth()
+{
+  return health;
+}
+
+void Player::DealDamage(int value)
+{
+  health -= value;
+  if(health < 0)
+    health = 0;
 }
 
 Vector2 Player::GetCollisionPosition()

@@ -6,11 +6,11 @@ Game::Game()
   playerAttackDirection = {0, 0};
   deltaTime = 0.0f;
   spawnRadius = 250.0f;
-  SpawnEnemies(1, 1);
-  SpawnEnemies(2, 1);
-  SpawnEnemies(3, 1);
-  SpawnEnemies(4, 1);
-  SpawnEnemies(5, 1);
+  SpawnEnemies(1, 15);
+  //SpawnEnemies(2, 5);
+  //SpawnEnemies(3, 5);
+  //SpawnEnemies(4, 5);
+  //SpawnEnemies(5, 5);
 
 }
 
@@ -110,6 +110,7 @@ void Game::Draw()
 
   DrawText("Use WASD to move", 10, 10, 20, DARKGRAY);
   DrawText("Use Arrows to attack", 10, 30, 20, DARKGRAY);
+  DrawText(TextFormat("Player's health is %d", player.GetHealth()), 10, 50, 20, DARKGRAY);
 }
 
 void Game::HandleInput()
@@ -164,9 +165,10 @@ void Game::SpawnEnemies(int type, int number)
 
 void Game::CheckForCollisions()
 {
-  // PlayerBullet collision with Enemies
+  // PlayerBullet collision
   for(auto& bullet: playerBullets)
     {
+      // with Enemies
       auto it = enemies.begin();
       while(it != enemies.end())
         {
@@ -179,6 +181,25 @@ void Game::CheckForCollisions()
             {
               ++it;
             }
+        }
+
+      // with EnemyBullets
+      for(auto& enemyBullet: enemyBullets)
+        {
+          if(CheckCollisionCircles(bullet.GetCollisionPosition(), bullet.GetCollisionRadius(), enemyBullet.GetCollisionPosition(), enemyBullet.GetCollisionRadius()))
+            {
+              enemyBullet.shouldBeDestroyed = true;
+              bullet.Penetrate();
+            }
+        }
+    }
+
+  for(auto& bullet: enemyBullets)
+    {
+      if(CheckCollisionCircles(bullet.GetCollisionPosition(), bullet.GetCollisionRadius(), player.GetCollisionPosition(), player.GetCollisionRadius()))
+        {
+          bullet.shouldBeDestroyed = true;
+          player.DealDamage(1);
         }
     }
 }
