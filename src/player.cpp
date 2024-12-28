@@ -41,8 +41,8 @@ void Player::Draw()
 
 
   // Hurtbox
-  DrawCircleV(position, 2, RED);
-  DrawCircleV(position, 1, WHITE);
+  //DrawCircleV(position, 2, RED);
+  //DrawCircleV(position, 1, WHITE);
 
 }
 

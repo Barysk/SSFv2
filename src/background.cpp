@@ -19,8 +19,6 @@ Background::Background()
   offsetFor = {0, 0};
 }
 
-
-
 void Background::UnloadImages()
 {
   UnloadTexture(background);

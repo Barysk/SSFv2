@@ -43,10 +43,10 @@ Enemy::Enemy(Vector2 position, int type)
       cooldown = 0.32f;
       break;
     case 2:
-      cooldown = 0.32f;
+      cooldown = 0.64f;
       break;
     case 3:
-      cooldown = 0.64f;
+      cooldown = 0.32f;
       break;
     case 4:
       cooldown = 0.16f;
@@ -149,7 +149,7 @@ void Enemy::Attack(std::vector<EnemyBullet>& bullets)
     case 2:
       if(GetTime() - lastTimeFired >= cooldown)
         {
-          for(int i = -25; i <= 25; i += 25)
+          for(int i = -8; i <= 8; i += 2)
             {
               bullets.push_back(EnemyBullet(position, Vector2Rotate(direction, i * DEG2RAD), speed/2 + (float)bulletSpeed, 0, type));
             }

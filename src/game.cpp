@@ -6,11 +6,11 @@ Game::Game()
   playerAttackDirection = {0, 0};
   deltaTime = 0.0f;
   spawnRadius = 250.0f;
-  SpawnEnemies(1, 15);
-  //SpawnEnemies(2, 5);
-  //SpawnEnemies(3, 5);
-  //SpawnEnemies(4, 5);
-  //SpawnEnemies(5, 5);
+  //SpawnEnemies(1, 1);
+  //SpawnEnemies(2, 1);
+  //SpawnEnemies(3, 1);
+  //SpawnEnemies(4, 1);
+  //SpawnEnemies(5, 1);
 
 }
 
@@ -108,9 +108,9 @@ void Game::Draw()
 
   EndMode2D();
 
-  DrawText("Use WASD to move", 10, 10, 20, DARKGRAY);
-  DrawText("Use Arrows to attack", 10, 30, 20, DARKGRAY);
-  DrawText(TextFormat("Player's health is %d", player.GetHealth()), 10, 50, 20, DARKGRAY);
+  //DrawText("Use WASD to move", 10, 10, 20, DARKGRAY);
+  //DrawText("Use Arrows to attack", 10, 30, 20, DARKGRAY);
+  //DrawText(TextFormat("Player's health is %d", player.GetHealth()), 10, 50, 20, DARKGRAY);
 }
 
 void Game::HandleInput()

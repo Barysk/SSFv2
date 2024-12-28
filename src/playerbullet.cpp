@@ -23,7 +23,7 @@ PlayerBullet::PlayerBullet(Vector2 position, Vector2 direction)
     this->direction.y = this->direction.y / magnitude;
   }
 
-  speed = 150;
+  speed = 128;
   timeActive = 0.0f;
   timeToLive = 0.8f;
   rotation = atan2(this->direction.y, this->direction.x) * RAD2DEG + 90;
