@@ -12,11 +12,12 @@ public:
   void Draw();
 private:
   // Menu items and state
-  std::vector<std::string> mainMenuItems;
-  std::vector<std::vector<std::string>> subMenuItems;
+  std::vector<std::string> mainMenu;
   int currentMenu;
-  std::vector<std::string> GetCurrentMenu();
   int selectedIndex;
+  std::vector<std::vector<std::string>> optionMenu;
+  int subSelectedIndexX;
+  int subSelectedIndexY;
   int fontSize;
   int spacing;
   int startX;

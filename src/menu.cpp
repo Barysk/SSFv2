@@ -4,8 +4,10 @@
 Menu::Menu()
 {
   // MainMenu items
-  mainMenuItems = {"Start Game", "Tutorial", "Scores", "Settings", "Exit"};
+  mainMenu = {"Start Game", "Tutorial", "Scores", "Settings", "Exit"};
   selectedIndex = 0;
+  subSelectedIndexX = 0;
+  subSelectedIndexY = 0;
   fontSize = 20;
   spacing = 30;
   startX = 10;
@@ -13,100 +15,162 @@ Menu::Menu()
 
   currentMenu = 0;
   // 0 - Main
-  // 1 - StartGame
+  // 1 - Settings
   // 2 - Scores
-  // 3 - Settings
 
 
-  subMenuItems =
-    {
-      {"Easy", "Medium", "Hard", "Insane"}, // Start Game submenu
-      {"Record 1", "Record 2", "Record 3"}, // Scores submenu
-      {"Max FPS", "Fullscreen", "Vsync"}    // Settings submenu
-    };
+
+  optionMenu =
+  {
+    {"FPS", "SOUND", "MODE", "VSYNC", "RESET", "BACK"},
+    {"60", "120", "144", "240"},
+    {"ON", "OFF"},
+    {"WINDOWED", "MAXIMIZED"},
+    {"ON", "OFF"},
+  };
+
+  // subMenuItems =
+  //   {
+  //     {"Record 1", "Record 2", "Record 3", "Back"}, // Scores submenu
+  //     {"Max FPS", "Fullscreen", "Vsync", "Back"}    // Settings submenu
+  //   };
 
 }
 
 void Menu::Update()
 {
-  const std::vector<std::string>& menuItems = GetCurrentMenu();
-
-  // Navigation for the current menu
-  if (IsKeyPressed(KEY_UP))
-    {
-      selectedIndex--;
-      if (selectedIndex < 0) selectedIndex = menuItems.size() - 1; // Wrap around
-    }
-  else if (IsKeyPressed(KEY_DOWN))
-    {
-      selectedIndex++;
-      if (selectedIndex >= menuItems.size()) selectedIndex = 0; // Wrap around
-    }
-
-  // Handle selection
-  if (IsKeyPressed(KEY_ENTER))
-    {
-      if (currentMenu == 0)
+  switch (currentMenu) {
+    case 0:
+      if (IsKeyPressed(KEY_UP))
         {
-          // Main menu selection logic
-          switch (selectedIndex)
-            {
-              case 0: currentMenu = 1; break; // Start Game submenu
-              case 1: /* Tutorial logic */ break;               // No submenu
-              case 2: currentMenu = 2; break;    // Scores submenu
-              case 3: currentMenu = 3; break;  // Settings submenu
-              case 4: CloseWindow(); break;                      // Exit
+          selectedIndex--;
+          if (selectedIndex < 0) selectedIndex = mainMenu.size() - 1;
+        }
+      else if (IsKeyPressed(KEY_DOWN))
+        {
+          selectedIndex++;
+          if (selectedIndex >= mainMenu.size()) selectedIndex = 0;
+        }
+
+      if (IsKeyPressed(KEY_ENTER))
+        {
+          switch (selectedIndex) {
+            case 0:
+              // start game
+              break;
+            case 1:
+              // start tutor
+              break;
+            case 2:
+              // scores
+              break;
+            case 3:
+              currentMenu = 1;
+              break;
+            case 4:
+              // Exit
+              CloseWindow();
+              break;
+            default:
+              break;
             }
         }
-      else
+      break;
+
+    case 1:
+      if (IsKeyPressed(KEY_UP))
         {
-          // Submenu logic (return to Main menu or perform specific actions)
-          currentMenu = 0; // Return to main menu after selection
+          subSelectedIndexY--;
+          if (subSelectedIndexY < 0) subSelectedIndexY = optionMenu[0].size() - 1;
         }
+      else if (IsKeyPressed(KEY_DOWN))
+        {
+          subSelectedIndexY++;
+          if (subSelectedIndexY >= optionMenu[0].size()) subSelectedIndexY = 0;
+        }
+
+      if (IsKeyPressed(KEY_BACKSPACE))
+        currentMenu = 0;
+
+      if (IsKeyPressed(KEY_ENTER))
+        {
+          switch (subSelectedIndexY) {
+            case 0:
+              // start game
+              break;
+            case 1:
+              // start tutor
+              break;
+            case 2:
+              // scores
+              break;
+            case 3:
+
+              break;
+            case 4:
+
+              break;
+            case 5:
+              currentMenu = 0;
+              break;
+            default:
+              break;
+            }
+        }
+      break;
+
+      break;
+
+    default:
+      break;
     }
 
-  // Return to main menu with Backspace
-  if (IsKeyPressed(KEY_BACKSPACE) && currentMenu != 0)
-    {
-      currentMenu = 0;
-    }
+
 }
 
 void Menu::Draw()
 {
-  const std::vector<std::string>& menuItems = GetCurrentMenu();
-
-      // Draw the main menu, grayed out if a submenu is active
-      for (size_t i = 0; i < mainMenuItems.size(); i++)
+  switch (currentMenu) {
+    case 0: // Draw Main Menu
+      for (int i = 0; i < mainMenu.size(); i++)
         {
-          Color color = (currentMenu != 0) ? GRAY : WHITE;
-          if (i == selectedIndex && currentMenu == 0)
-            {
-              color = GREEN; // Highlight only if Main menu is active
-            }
-          DrawText(mainMenuItems[i].c_str(), startX, startY + i * spacing, fontSize, color);
+          DrawText(mainMenu[i].c_str(), startX, startY + i * spacing, fontSize, (i == selectedIndex) ? GREEN : WHITE);
+        }
+      break;
+
+    case 1: // Draw Main Menu Darkened and Opened SubMenu
+      for (int i = 0; i < mainMenu.size(); i++)
+        {
+          DrawText(mainMenu[i].c_str(), startX, startY + i * spacing, fontSize, (i == selectedIndex) ? DARKGREEN : DARKGRAY);
+        }
+      for (int i = 0; i < optionMenu[0].size(); i++)
+        {
+          DrawText(optionMenu[0][i].c_str(), startX+128, startY + i * spacing, fontSize, (i == subSelectedIndexY) ? GREEN : WHITE);
         }
 
-      // Draw the current submenu, if active
-      if (currentMenu != 0)
-        {
-          const int submenuStartX = startX + 200; // Position submenu to the right of the main menu
-          for (size_t i = 0; i < menuItems.size(); i++)
-            {
-              Color color = (i == selectedIndex) ? GREEN : WHITE;
-              DrawText(menuItems[i].c_str(), submenuStartX, startY + i * spacing, fontSize, color);
-            }
-        }
-}
 
-std::vector<std::string> Menu::GetCurrentMenu()
-{
-  switch (currentMenu)
-    {
-      case 0: return mainMenuItems;
-      case 1: return subMenuItems[0];
-      case 2: return subMenuItems[1];
-      case 3: return subMenuItems[2];
-      default: return {}; // Return an empty vector for unsupported states
+      for (int i = 0; i < optionMenu[1].size(); i++)
+        {
+          DrawText(optionMenu[1][i].c_str(), startX+256 + i * spacing * 2, startY, fontSize, (i == subSelectedIndexX) ? GREEN : WHITE);
+        }
+
+      for (int i = 0; i < optionMenu[2].size(); i++)
+        {
+          DrawText(optionMenu[2][i].c_str(), startX+256 + i * spacing * 2, startY + spacing, fontSize, (i == subSelectedIndexX) ? GREEN : WHITE);
+        }
+
+      for (int i = 0; i < optionMenu[3].size(); i++)
+        {
+          DrawText(optionMenu[3][i].c_str(), startX+256 + i * spacing * 4, startY + spacing * 2, fontSize, (i == subSelectedIndexX) ? GREEN : WHITE);
+        }
+
+      for (int i = 0; i < optionMenu[4].size(); i++)
+        {
+          DrawText(optionMenu[4][i].c_str(), startX+256 + i * spacing * 2, startY + spacing * 3, fontSize, (i == subSelectedIndexX) ? GREEN : WHITE);
+        }
+
+      break;
+    default:
+      break;
     }
 }
