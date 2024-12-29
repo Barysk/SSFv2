@@ -1,20 +1,42 @@
 #include "../include/player.h"
 
+Texture2D Player::images[3] = {0};
+
 Player::Player()
 {
-  image = LoadTexture("assets/sprites/player/pTest.png");
-  position.x = (GetScreenWidth() - image.width)/2;
-  position.y = (GetScreenHeight() - image.width)/2;
+  health = 3;
+  for(int i = 0; i < 3; i++)
+    {
+      if(images[i].id == 0)
+        {
+          switch (i)
+            {
+            case 0:
+              images[0] = LoadTexture("assets/sprites/player/playerMin.png");
+              break;
+            case 1:
+              images[1] = LoadTexture("assets/sprites/player/playerMid.png");
+              break;
+            case 2:
+              images[2] = LoadTexture("assets/sprites/player/playerMax.png");
+              break;
+            default:
+              break;
+            }
+        }
+    }
+
+  position.x = (GetScreenWidth() - images[health-1].width)/2;
+  position.y = (GetScreenHeight() - images[health-1].width)/2;
   rotation = 0.0f;
   speed = 100;
-  health = 3;
   lastTimeFired = 0.0f;
   cooldown = 0.16f;
 
   // Camera Init
   camera = {0}; // reseting any settings
-  camera.target = { (GetScreenWidth() - image.width) / 2.0f, (GetScreenHeight() - image.height) / 2.0f }; // initial camera pos
-  camera.offset = { (GetScreenWidth() - image.width) / 2.0f, (GetScreenHeight() - image.height) / 2.0f }; // centering camera on player
+  camera.target = { (GetScreenWidth() - images[health-1].width) / 2.0f, (GetScreenHeight() - images[health-1].height) / 2.0f }; // initial camera pos
+  camera.offset = { (GetScreenWidth() - images[health-1].width) / 2.0f, (GetScreenHeight() - images[health-1].height) / 2.0f }; // centering camera on player
   camera.zoom = 2.0f; // camera's zoom
   camera.rotation = 0; // rotation
   cameraSpeed = 40;
@@ -22,28 +44,28 @@ Player::Player()
 
 Player::~Player()
 {
-  UnloadTexture(image);
+  for(int i = 0; i < 3; i++)
+    {
+      UnloadTexture(images[i]);
+    }
 }
 
 void Player::Draw()
 {
-  // Define the source rectangle (entire texture) *Consider later usage of static_cast<float>
-  Rectangle sRect = {0, 0, (float)image.width, (float)image.height};
+  if (health > 0)
+    {
+      // Define the source rectangle (entire texture) *Consider later usage of static_cast<float>
+      Rectangle sRect = {0, 0, (float)images[health-1].width, (float)images[health-1].height};
 
-  // Define the destination rectangle (where the texture will be drawn)
-  Rectangle dRect = {position.x, position.y, (float)image.width, (float)image.height};
+      // Define the destination rectangle (where the texture will be drawn)
+      Rectangle dRect = {position.x, position.y, (float)images[health-1].width, (float)images[health-1].height};
 
-  // Set the origin of rotation (center of the texture)
-  Vector2 origin = { image.width / 2.0f, image.height / 2.0f };
+      // Set the origin of rotation (center of the texture)
+      Vector2 origin = { images[health-1].width / 2.0f, images[health-1].height / 2.0f };
 
-  // Draw the texture with rotation
-  DrawTexturePro(image, sRect, dRect, origin, rotation, WHITE);
-
-
-  // Hurtbox
-  //DrawCircleV(position, 2, RED);
-  //DrawCircleV(position, 1, WHITE);
-
+      // Draw the texture with rotation
+      DrawTexturePro(images[health-1], sRect, dRect, origin, rotation, WHITE);
+    }
 }
 
 

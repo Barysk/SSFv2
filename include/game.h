@@ -2,6 +2,7 @@
 #include "../include/player.h"
 #include "../include/background.h"
 #include "../include/enemy.h"
+#include <string>
 
 class Game
 {
@@ -13,6 +14,10 @@ public:
   void HandleInput();
   void SpawnEnemies(int type, int number);
   void CheckForCollisions();
+  static std::string FormatWithLeadingZeros(int number, int width);
+  void UpdateHiScore();
+  void SaveHiScore(int hiSocre);
+  static int LoadHiScore();
 private:
   float spawnRadius;
   float deltaTime;
@@ -23,5 +28,8 @@ private:
   Vector2 playerDirection;
   Vector2 playerAttackDirection;
   Background background;
+
+  int hiScore;
+  int score;
 };
 

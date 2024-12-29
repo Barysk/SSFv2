@@ -8,6 +8,7 @@
 class Player
 {
 public:
+  static Texture2D images[3];
   Player();
   ~Player();
   void Draw();
@@ -20,8 +21,6 @@ public:
   Vector2 GetCollisionPosition();
   float GetCollisionRadius();
   Camera2D camera;
-  //std::vector<PlayerBullet> bullets;
-  Texture2D image;
   Vector2 position;
 
 private:

@@ -1,4 +1,6 @@
 #include "../include/game.h"
+#include <iostream>
+#include <fstream>
 
 Game::Game()
 {
@@ -6,11 +8,13 @@ Game::Game()
   playerAttackDirection = {0, 0};
   deltaTime = 0.0f;
   spawnRadius = 250.0f;
-  //SpawnEnemies(1, 1);
+  score = 0;
+  hiScore = LoadHiScore();
+  SpawnEnemies(1, 3);
   //SpawnEnemies(2, 1);
   //SpawnEnemies(3, 1);
   //SpawnEnemies(4, 1);
-  //SpawnEnemies(5, 1);
+  SpawnEnemies(5, 1);
 
 }
 
@@ -26,6 +30,9 @@ void Game::Update()
 {
   // Updating deltaTime
   deltaTime = GetFrameTime();
+
+  // Update hiScore
+  UpdateHiScore();
 
   // Player Input
   HandleInput();
@@ -51,8 +58,6 @@ void Game::Update()
   // Background
   background.Update();
 
-  // Savepoint
-
   // Enemy
   for(auto& enemy: enemies)
     {
@@ -74,8 +79,21 @@ void Game::Update()
     {
       bullet.Move(deltaTime);
     }
+}
 
+std::string Game::FormatWithLeadingZeros(int number, int width)
+{
+    std::string numberText = std::to_string(number);
 
+    // If the number exceeds the specified width, we return the number as is
+    if (numberText.length() >= width)
+    {
+        return numberText;
+    }
+
+    // Otherwise, add leading zeros
+    int leadingZeros = width - numberText.length();
+    return std::string(leadingZeros, '0') + numberText;
 }
 
 void Game::Draw()
@@ -110,7 +128,9 @@ void Game::Draw()
 
   //DrawText("Use WASD to move", 10, 10, 20, DARKGRAY);
   //DrawText("Use Arrows to attack", 10, 30, 20, DARKGRAY);
-  //DrawText(TextFormat("Player's health is %d", player.GetHealth()), 10, 50, 20, DARKGRAY);
+  //DrawText(const char *text, int posX, int posY, int fontSize, Color color);
+  DrawText(FormatWithLeadingZeros(hiScore, 8).c_str(), 8, 10, 16, WHITE);
+  DrawText(FormatWithLeadingZeros(score, 8).c_str(), 8, 30, 16, WHITE);
 }
 
 void Game::HandleInput()
@@ -174,6 +194,7 @@ void Game::CheckForCollisions()
         {
           if(CheckCollisionCircles(bullet.GetCollisionPosition(), bullet.GetCollisionRadius(), it->GetCollisionPosition(), it->GetCollisionRadius()))
             {
+              score += it->GetScore() * player.GetHealth();
               it = enemies.erase(it);
               bullet.shouldBeDestroyed = true;
             }
@@ -188,6 +209,7 @@ void Game::CheckForCollisions()
         {
           if(CheckCollisionCircles(bullet.GetCollisionPosition(), bullet.GetCollisionRadius(), enemyBullet.GetCollisionPosition(), enemyBullet.GetCollisionRadius()))
             {
+              score += 1;
               enemyBullet.shouldBeDestroyed = true;
               bullet.Penetrate();
             }
@@ -202,4 +224,43 @@ void Game::CheckForCollisions()
           player.DealDamage(1);
         }
     }
+}
+
+void Game::UpdateHiScore()
+{
+  if (score > hiScore)
+    {
+      hiScore = score;
+      SaveHiScore(hiScore);
+    }
+}
+
+void Game::SaveHiScore(int hiSocre)
+{
+  std::ofstream highscorefile("highscore.txt");
+    if(highscorefile.is_open())
+      {
+        highscorefile << hiScore;
+        highscorefile.close();
+      }
+    else
+      {
+        std::cerr << "Failed to save highscore to file" << std::endl;
+      }
+}
+
+int Game::LoadHiScore()
+{
+  int loadedHiScore = 0;
+    std::ifstream highscorefile("highscore.txt");
+    if(highscorefile.is_open())
+      {
+        highscorefile >> loadedHiScore;
+        highscorefile.close();
+      }
+    else
+      {
+        std::cerr << "Failed to load highscore from file" << std::endl;
+      }
+    return loadedHiScore;
 }

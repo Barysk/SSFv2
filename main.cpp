@@ -14,9 +14,8 @@ int main(void)
   int gameState = 0; // for handling transitions [Will be rethinked]
   // 0: Main Menu,
   // 1: Game is running
-  // 2: Options are opened
-  // 3: Brief is running
-  // 4: Must Close
+  // 2: Brief is running
+  // 3: Must Close
 
   float scale;
 
@@ -39,7 +38,7 @@ int main(void)
   Rectangle sRect;
   Rectangle dRect;
 
-  while (!WindowShouldClose())
+  while (!WindowShouldClose() && gameState != 3)
     {
 
       // Handle fullscreen toggle
@@ -67,6 +66,9 @@ int main(void)
           BeginTextureMode(target);
             ClearBackground(BLACK);
             menu.Draw();
+            gameState = menu.GetGameState();
+            DrawText("High-Score: ", 16, 16, 32, GRAY);
+            DrawText(Game::FormatWithLeadingZeros(Game::LoadHiScore(),8).c_str(), 16*15 , 16, 32, GRAY);
           EndTextureMode();
 
           break;
@@ -83,14 +85,36 @@ int main(void)
               game.CheckForCollisions();
             }
 
+
           // Draw everything in the render texture, note this will not be rendered on screen, yet
           BeginTextureMode(target);
             ClearBackground(BLACK);
             game.Draw();
+            if(isGamePaused)
+              DrawText("Paused", (gameScreenWidth / 2) - 64, 16, 32, WHITE);
           EndTextureMode();
           break;
         case 2:
+          // Handle Pause
+          if(IsKeyPressed(KEY_SPACE) && isGamePaused)
+            isGamePaused = false;
+          else if(IsKeyPressed(KEY_SPACE) && !isGamePaused)
+            isGamePaused = true;
 
+          if(!isGamePaused)
+            {
+              game.Update();
+              game.CheckForCollisions();
+            }
+
+
+          // Draw everything in the render texture, note this will not be rendered on screen, yet
+          BeginTextureMode(target);
+            ClearBackground(BLACK);
+            game.Draw();
+            if(isGamePaused)
+              DrawText("Paused", 16, 16, 32, WHITE);
+          EndTextureMode();
           break;
         case 3:
 
@@ -112,7 +136,7 @@ int main(void)
         dRect = {(GetScreenWidth() - ((float)gameScreenWidth*scale))*0.5f,
                             (GetScreenHeight() - ((float)gameScreenHeight*scale))*0.5f,
                             (float)gameScreenWidth*scale, (float)gameScreenHeight*scale};
-        DrawTexturePro(target.texture, sRect, dRect, (Vector2){0, 0}, 0.0f, (isGamePaused) ? DARKGREEN : WHITE);
+        DrawTexturePro(target.texture, sRect, dRect, (Vector2){0, 0}, 0.0f, (isGamePaused) ? GREEN : WHITE);
       EndDrawing();
 
     }

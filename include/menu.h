@@ -10,14 +10,12 @@ public:
   Menu();
   void Update();
   void Draw();
+  int GetGameState();
 private:
   // Menu items and state
   std::vector<std::string> mainMenu;
-  int currentMenu;
+  int gameState;
   int selectedIndex;
-  std::vector<std::vector<std::string>> optionMenu;
-  int subSelectedIndexX;
-  int subSelectedIndexY;
   int fontSize;
   int spacing;
   int startX;

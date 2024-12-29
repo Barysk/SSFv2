@@ -89,7 +89,7 @@ void Enemy::Move(float deltaTime, Vector2 playerPosition)
     direction = { playerPosition.x - position.x, playerPosition.y - position.y };
 
     // Distance between player and enemy
-    float distance = sqrt(direction.x * direction.x + direction.y * direction.y);
+    distance = sqrt(direction.x * direction.x + direction.y * direction.y);
 
     // If the enemy is closer than playerDistance, move away
     if (distance < playerDistance)
@@ -218,4 +218,27 @@ Vector2 Enemy::GetCollisionPosition()
 float Enemy::GetCollisionRadius()
 {
   return 3.0f;
+}
+
+int Enemy::GetScore()
+{
+  switch (type) {
+    case 1:
+      return 100 + 1000 / distance;
+      break;
+    case 2:
+      return 200 + 2000 / distance;
+      break;
+    case 3:
+      return 300 + 3000 / distance;
+      break;
+    case 4:
+      return 400 + 4000 / distance;
+      break;
+    case 5:
+      return 500 + 5000 / distance;
+      break;
+    default:
+      return 0;
+    }
 }

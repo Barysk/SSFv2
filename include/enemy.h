@@ -15,11 +15,13 @@ public:
   void Attack(std::vector<EnemyBullet>& bullets);
   Vector2 GetCollisionPosition();
   float GetCollisionRadius();
+  int GetScore();
   //std::vector<EnemyBullet> bullets;
   int type;
 private:
   Vector2 position;
   Vector2 direction;
+  float distance;
   float directionOffset;
   bool incrementDirectionOffset;
   int playerDistance;
