@@ -38,7 +38,7 @@ int main(void)
   Rectangle sRect;
   Rectangle dRect;
 
-  while (!WindowShouldClose() && gameState != 3)
+  while (!WindowShouldClose() && gameState != 2)
     {
 
       // Handle fullscreen toggle
@@ -67,7 +67,6 @@ int main(void)
             ClearBackground(BLACK);
             menu.Draw();
             gameState = menu.GetGameState();
-            DrawText("High-Score: ", 16, 16, 32, GRAY);
             DrawText(Game::FormatWithLeadingZeros(Game::LoadHiScore(),8).c_str(), 16*15 , 16, 32, GRAY);
           EndTextureMode();
 

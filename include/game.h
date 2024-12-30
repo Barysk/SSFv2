@@ -19,6 +19,11 @@ public:
   void SaveHiScore(int hiSocre);
   static int LoadHiScore();
 private:
+  void SpawnWave();
+  int currentWave;
+  int maxSpawnToken;
+  float midWaveTimer;
+  float midWaveTime;
   float spawnRadius;
   float deltaTime;
   Player player;

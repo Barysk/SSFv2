@@ -10,11 +10,17 @@ Game::Game()
   spawnRadius = 250.0f;
   score = 0;
   hiScore = LoadHiScore();
-  SpawnEnemies(1, 3);
-  //SpawnEnemies(2, 1);
-  //SpawnEnemies(3, 1);
-  //SpawnEnemies(4, 1);
-  SpawnEnemies(5, 1);
+  //SpawnEnemies(1, 1); //1
+  //SpawnEnemies(2, 1); //3
+  //SpawnEnemies(3, 1); //1
+  //SpawnEnemies(4, 1); //2
+  //SpawnEnemies(5, 1); //2
+  currentWave = 0;
+  maxSpawnToken = 4;
+  midWaveTimer = 3.0f;
+  midWaveTime = 0.0f;
+
+
 
 }
 
@@ -27,9 +33,20 @@ Game::~Game()
 }
 
 void Game::Update()
-{
+{ 
   // Updating deltaTime
   deltaTime = GetFrameTime();
+
+  if(enemies.empty() && midWaveTime < midWaveTimer)
+    {
+      midWaveTime += deltaTime;
+    }
+  else if (enemies.empty() && midWaveTime >= midWaveTimer)
+    {
+      SpawnWave();
+      midWaveTime = 0.0f;
+    }
+
 
   // Update hiScore
   UpdateHiScore();
@@ -129,8 +146,10 @@ void Game::Draw()
   //DrawText("Use WASD to move", 10, 10, 20, DARKGRAY);
   //DrawText("Use Arrows to attack", 10, 30, 20, DARKGRAY);
   //DrawText(const char *text, int posX, int posY, int fontSize, Color color);
-  DrawText(FormatWithLeadingZeros(hiScore, 8).c_str(), 8, 10, 16, WHITE);
-  DrawText(FormatWithLeadingZeros(score, 8).c_str(), 8, 30, 16, WHITE);
+  if (currentWave > 0)
+    DrawText(TextFormat("Wave: %d", currentWave), 10, 10, 20, DARKGRAY);
+  DrawText(FormatWithLeadingZeros(hiScore, 8).c_str(), 540, 10, 20, WHITE);
+  DrawText(FormatWithLeadingZeros(score, 8).c_str(), 540, 30, 20, WHITE);
 }
 
 void Game::HandleInput()
@@ -263,4 +282,71 @@ int Game::LoadHiScore()
         std::cerr << "Failed to load highscore from file" << std::endl;
       }
     return loadedHiScore;
+}
+
+void Game::SpawnWave()
+{
+  // midWaveTimer = 0.0f;
+
+  currentWave++;
+  float waitTimer = 5.0f;
+  float waitTime = 0.0f;
+  int spawnType;
+  int spawnToken = maxSpawnToken;
+
+  while(spawnToken > 0)
+    {
+      waitTime += GetFrameTime();
+      if(waitTime >= waitTimer)
+        {
+          if(spawnToken > 2)
+            {
+              spawnType = GetRandomValue(1, 5);
+            }
+          else if (spawnToken == 2)
+            {
+              spawnType = GetRandomValue(1, 4);
+            }
+          else
+            {
+              spawnType = GetRandomValue(1, 2);
+            }
+
+          //SpawnEnemies(1, 1); //1
+          //SpawnEnemies(2, 1); //2
+          //SpawnEnemies(3, 1); //1
+          //SpawnEnemies(4, 1); //2
+          //SpawnEnemies(5, 1); //3
+
+          switch (spawnType) {
+            case 1: // 1 bullet
+              SpawnEnemies(1, 1);
+              spawnToken -= 1;
+              break;
+            case 2: // Rand Dir Bullet
+              SpawnEnemies(3, 1);
+              spawnToken -= 1;
+              break;
+            case 3: // Wall bullet
+              SpawnEnemies(2, 1);
+              spawnToken -= 2;
+              break;
+            case 4: // Waving bullet
+              SpawnEnemies(4, 1);
+              spawnToken -= 2;
+              break;
+            case 5: // Field bullet
+              SpawnEnemies(5, 1);
+              spawnToken -= 3;
+              break;
+            default:
+              break;
+            }
+          waitTime = 0.0f;
+        } // if
+    } // while
+
+
+  if(maxSpawnToken < 16)
+    maxSpawnToken++;
 }
