@@ -18,6 +18,9 @@ public:
   void UpdateHiScore();
   void SaveHiScore(int hiSocre);
   static int LoadHiScore();
+  void RESET();
+  bool ShouldEnd();
+  int GetScore();
 private:
   void SpawnWave();
   int currentWave;

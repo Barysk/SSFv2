@@ -34,6 +34,7 @@ Game::~Game()
 
 void Game::Update()
 { 
+
   // Updating deltaTime
   deltaTime = GetFrameTime();
 
@@ -289,16 +290,11 @@ void Game::SpawnWave()
   // midWaveTimer = 0.0f;
 
   currentWave++;
-  float waitTimer = 5.0f;
-  float waitTime = 0.0f;
   int spawnType;
   int spawnToken = maxSpawnToken;
 
   while(spawnToken > 0)
     {
-      waitTime += GetFrameTime();
-      if(waitTime >= waitTimer)
-        {
           if(spawnToken > 2)
             {
               spawnType = GetRandomValue(1, 5);
@@ -342,11 +338,40 @@ void Game::SpawnWave()
             default:
               break;
             }
-          waitTime = 0.0f;
-        } // if
     } // while
 
 
   if(maxSpawnToken < 16)
     maxSpawnToken++;
+}
+
+void Game::RESET()
+{
+  playerDirection = {0, 0};
+  playerAttackDirection = {0, 0};
+  deltaTime = 0.0f;
+  spawnRadius = 250.0f;
+  score = 0;
+  hiScore = LoadHiScore();
+  currentWave = 0;
+  maxSpawnToken = 4;
+  midWaveTimer = 3.0f;
+  midWaveTime = 0.0f;
+  player.SetHealth(3);
+  enemies.clear();
+  enemyBullets.clear();
+  enemyBullets.clear();
+}
+
+bool Game::ShouldEnd()
+{
+  if (player.GetHealth() <= 0)
+    return 1;
+  else
+    return 0;
+}
+
+int Game::GetScore()
+{
+  return score;
 }

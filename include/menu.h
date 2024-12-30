@@ -11,6 +11,7 @@ public:
   void Update();
   void Draw();
   int GetGameState();
+  void RESET();
 private:
   // Menu items and state
   std::vector<std::string> mainMenu;

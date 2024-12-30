@@ -14,7 +14,7 @@ int main(void)
   int gameState = 0; // for handling transitions [Will be rethinked]
   // 0: Main Menu,
   // 1: Game is running
-  // 2: Brief is running
+  // 2: End screen
   // 3: Must Close
 
   float scale;
@@ -38,7 +38,7 @@ int main(void)
   Rectangle sRect;
   Rectangle dRect;
 
-  while (!WindowShouldClose() && gameState != 2)
+  while (!WindowShouldClose() && gameState != 3)
     {
 
       // Handle fullscreen toggle
@@ -52,6 +52,16 @@ int main(void)
           else
               ClearWindowState(FLAG_WINDOW_MAXIMIZED && FLAG_WINDOW_TOPMOST && FLAG_BORDERLESS_WINDOWED_MODE);
         }
+
+      // change framerate
+      if (IsKeyPressed(KEY_THREE))
+        SetTargetFPS(30);
+      else if (IsKeyPressed(KEY_SIX))
+          SetTargetFPS(60);
+      else if (IsKeyPressed(KEY_TWO))
+          SetTargetFPS(120);
+      else if (IsKeyPressed(KEY_FOUR))
+          SetTargetFPS(144);
 
       // Compute required framebuffer scaling
       scale = MIN((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
@@ -84,6 +94,8 @@ int main(void)
               game.CheckForCollisions();
             }
 
+          if(game.ShouldEnd())
+            gameState = 2;
 
           // Draw everything in the render texture, note this will not be rendered on screen, yet
           BeginTextureMode(target);
@@ -94,31 +106,26 @@ int main(void)
           EndTextureMode();
           break;
         case 2:
-          // Handle Pause
-          if(IsKeyPressed(KEY_SPACE) && isGamePaused)
-            isGamePaused = false;
-          else if(IsKeyPressed(KEY_SPACE) && !isGamePaused)
-            isGamePaused = true;
-
-          if(!isGamePaused)
+          if (IsKeyPressed(KEY_ENTER))
             {
-              game.Update();
-              game.CheckForCollisions();
+              game.RESET();
+              menu.RESET();
+              gameState = 0;
             }
 
-
-          // Draw everything in the render texture, note this will not be rendered on screen, yet
           BeginTextureMode(target);
             ClearBackground(BLACK);
-            game.Draw();
-            if(isGamePaused)
-              DrawText("Paused", 16, 16, 32, WHITE);
-          EndTextureMode();
-          break;
-        case 3:
 
-          break;
-        case 4:
+            DrawText("CONNECTION LOST", 16, 16, 32, WHITE);
+
+            DrawText("HIGHEST SCORE IS: ", 16, 16*4, 32, WHITE);
+            DrawText(Game::FormatWithLeadingZeros(Game::LoadHiScore(),8).c_str(), 16*22, 16*4, 32, WHITE);
+
+            DrawText("YOUR SCORE IS: ", 16, 16*6, 32, WHITE);
+            DrawText(Game::FormatWithLeadingZeros(game.GetScore(),8).c_str(), 16*22, 16*6, 32, WHITE);
+
+            DrawText("PRESS ENTER TO RESUME.", 16, 16*8, 32, WHITE);
+          EndTextureMode();
 
           break;
         default:

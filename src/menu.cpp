@@ -36,7 +36,7 @@ void Menu::Update()
           gameState = 1;
           break;
         case 1:
-          gameState = 2;
+          gameState = 3;
           break;
         default:
           break;
@@ -76,4 +76,10 @@ void Menu::Draw()
 int Menu::GetGameState()
 {
   return gameState;
+}
+
+void Menu::RESET()
+{
+  gameState = 0;
+  selectedIndex = 0;
 }
