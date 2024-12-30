@@ -32,7 +32,7 @@ Enemy::Enemy(Vector2 position, int type)
   this->position = position;
   this->type = type;
   speed = GetRandomValue(105, 115);
-  bulletSpeed = speed+10;
+  bulletSpeed = speed/1.5+10;
   direction = {0, 0};
   rotation = 0.0;
   lastTimeFired = 0.0f;

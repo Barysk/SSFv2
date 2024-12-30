@@ -24,6 +24,7 @@ public:
   Vector2 position;
 
 private:
+  Sound playerShooting;
   Vector2 direction;
   float rotation;
   float lastTimeFired;

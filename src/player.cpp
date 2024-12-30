@@ -4,6 +4,7 @@ Texture2D Player::images[3] = {0};
 
 Player::Player()
 {
+  playerShooting = LoadSound("assets/sounds/shoot.mp3");
   health = 3;
   for(int i = 0; i < 3; i++)
     {
@@ -31,7 +32,7 @@ Player::Player()
   rotation = 0.0f;
   speed = 100;
   lastTimeFired = 0.0f;
-  cooldown = 0.16f;
+  cooldown = 0.12f;
 
   // Camera Init
   camera = {0}; // reseting any settings
@@ -106,6 +107,7 @@ void Player::Attack(Vector2 attackDirection, std::vector<PlayerBullet>& bullets)
 
     if(GetTime() - lastTimeFired >= cooldown)
       {
+        PlaySound(playerShooting);
         bullets.push_back(PlayerBullet(position, Vector2Rotate(attackDirection, GetRandomValue(-16, 16) * DEG2RAD)));
         lastTimeFired = GetTime();
       }

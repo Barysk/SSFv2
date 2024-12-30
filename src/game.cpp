@@ -20,8 +20,9 @@ Game::Game()
   midWaveTimer = 3.0f;
   midWaveTime = 0.0f;
 
-
-
+  // Sounds
+  playerHit = LoadSound("assets/sounds/hitPlayer.mp3");
+  enemyExplosion = LoadSound("assets/sounds/enemyExplosion.mp3");
 }
 
 Game::~Game()
@@ -30,6 +31,9 @@ Game::~Game()
   PlayerBullet::UnloadImage();
   Enemy::UnloadImages();
   EnemyBullet::UnloadImage();
+  UnloadSound(playerShooting);
+  UnloadSound(playerHit);
+  UnloadSound(enemyExplosion);
 }
 
 void Game::Update()
@@ -215,6 +219,7 @@ void Game::CheckForCollisions()
           if(CheckCollisionCircles(bullet.GetCollisionPosition(), bullet.GetCollisionRadius(), it->GetCollisionPosition(), it->GetCollisionRadius()))
             {
               score += it->GetScore() * player.GetHealth();
+              PlaySound(enemyExplosion);
               it = enemies.erase(it);
               bullet.shouldBeDestroyed = true;
             }
@@ -242,6 +247,7 @@ void Game::CheckForCollisions()
         {
           bullet.shouldBeDestroyed = true;
           player.DealDamage(1);
+          PlaySound(playerHit);
         }
     }
 }

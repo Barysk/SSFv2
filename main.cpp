@@ -24,6 +24,8 @@ int main(void)
   InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "SSFv2");
   SetWindowMinSize(640, 480);
 
+  InitAudioDevice();
+
   int gameScreenWidth = 640;
   int gameScreenHeight = 480;
 
@@ -62,6 +64,12 @@ int main(void)
           SetTargetFPS(120);
       else if (IsKeyPressed(KEY_FOUR))
           SetTargetFPS(144);
+
+      // Handle Mute
+      if (IsKeyPressed(KEY_M) && GetMasterVolume() != 0)
+        SetMasterVolume(0.0f);
+      else if (IsKeyPressed(KEY_M) && GetMasterVolume() == 0)
+        SetMasterVolume(100.0f);
 
       // Compute required framebuffer scaling
       scale = MIN((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
@@ -116,7 +124,7 @@ int main(void)
           BeginTextureMode(target);
             ClearBackground(BLACK);
 
-            DrawText("CONNECTION LOST", 16, 16, 32, WHITE);
+            DrawText("CONNECTION LOST", 16, 16, 32, RED);
 
             DrawText("HIGHEST SCORE IS: ", 16, 16*4, 32, WHITE);
             DrawText(Game::FormatWithLeadingZeros(Game::LoadHiScore(),8).c_str(), 16*22, 16*4, 32, WHITE);
@@ -146,6 +154,9 @@ int main(void)
       EndDrawing();
 
     }
+
+
+  CloseAudioDevice();
 
   CloseWindow();
 

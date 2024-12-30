@@ -22,6 +22,9 @@ public:
   bool ShouldEnd();
   int GetScore();
 private:
+  Sound playerShooting;
+  Sound playerHit;
+  Sound enemyExplosion;
   void SpawnWave();
   int currentWave;
   int maxSpawnToken;

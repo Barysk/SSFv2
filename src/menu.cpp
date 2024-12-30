@@ -46,7 +46,7 @@ void Menu::Update()
 
 void Menu::Draw()
 {
-  int textPos = 160;
+  int textPos = 120;
   Color textColour = DARKGRAY;
 
   for (int i = 0; i < mainMenu.size(); i++)
@@ -59,8 +59,10 @@ void Menu::Draw()
   DrawText("-Use Arrow Keys to attack in different directions", 16, textPos, 20, textColour); textPos += 20;
   DrawText("-Use WASD to move in different directions", 16, textPos, 20, textColour); textPos += 20;
   DrawText("-Press Space to pause/unpause the game", 16, textPos, 20, textColour); textPos += 20;
+  DrawText("--------------------------------------", 16, textPos, 20, textColour); textPos += 20;
   DrawText("-Press ESC to exit the game at any moment", 16, textPos, 20, textColour); textPos += 20;
   DrawText("-Press F11 to toggle fullscreen mode", 16, textPos, 20, textColour); textPos += 20;
+  DrawText("-Press M to mute/unmute sounds", 16, textPos, 20, textColour); textPos += 20;
   DrawText("-Press 3, 6, 2, or 4 to set FPS to 30, 60, 120, or 144", 16, textPos, 20, textColour); textPos += 20;
   DrawText("------------------------------------------------------", 16, textPos, 20, textColour); textPos += 20;
   DrawText("-The numbers you see here are your highest score", 16, textPos, 20, textColour); textPos += 20;
