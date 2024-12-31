@@ -54,7 +54,7 @@ void Menu::Draw()
       DrawText(mainMenu[i].c_str(), startX, startY + i * spacing, fontSize, (i == selectedIndex) ? GREEN : WHITE);
     }
 
-  DrawText("CLUIv2 [bkc]", 16, textPos, 20, textColour); textPos += 20;
+  DrawText("CLUIvG [bkc]", 16, textPos, 20, textColour); textPos += 20;
   DrawText("------------", 16, textPos, 20, textColour); textPos += 20;
   DrawText("-Use Arrow Keys to attack in different directions", 16, textPos, 20, textColour); textPos += 20;
   DrawText("-Use WASD to move in different directions", 16, textPos, 20, textColour); textPos += 20;

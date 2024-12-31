@@ -185,7 +185,7 @@ void Enemy::Attack(std::vector<EnemyBullet>& bullets)
           lastTimeFired = GetTime();
         }
     case 5:
-      if(GetTime() - lastTimeFired >= cooldown && (speed >= -10 && speed <= 10))
+      if(GetTime() - lastTimeFired >= cooldown && (speed >= -64 && speed <= 64))
         {
           if(incrementDirectionOffset)
             {
@@ -224,19 +224,19 @@ int Enemy::GetScore()
 {
   switch (type) {
     case 1:
-      return 100 + 1000 / distance;
+      return 100 + 10000 / distance;
       break;
     case 2:
-      return 200 + 2000 / distance;
+      return 200 + 20000 / distance;
       break;
     case 3:
-      return 300 + 3000 / distance;
+      return 300 + 30000 / distance;
       break;
     case 4:
-      return 400 + 4000 / distance;
+      return 400 + 40000 / distance;
       break;
     case 5:
-      return 500 + 5000 / distance;
+      return 500 + 50000 / distance;
       break;
     default:
       return 0;
