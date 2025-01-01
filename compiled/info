@@ -1,7 +1,9 @@
+=== Linux ===
 used for linux compilation:
-clang++ -o my_game main.cpp src/*.cpp -I/usr/include -lraylib -lGL -lm -lpthread -ldl -lX11
+clang++ -o SSFv2 main.cpp src/*.cpp -I/usr/include -lraylib -lGL -lm -lpthread -ldl -lX11
 
-
+=== Windows ===
 used for windows compilation:
 x86_64-w64-mingw32-g++ -o SSFv2.exe main.cpp src/*.cpp -I./build/raylib/include -L./build/raylib -L. -lraylib -lm -lssp -lpthread
-* Additional dll were needed.
+* Additional dll were needed and raylib compileoing for windows.
+* where 'build' is built raylib using 'x86_64-w64-mingw32-cmake' and 'make'

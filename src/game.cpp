@@ -122,7 +122,6 @@ void Game::Update()
     {
       if(it->ShouldDelete())
         {
-          hits.push_back(Hit(it->GetCollisionPosition()));
           it = enemyBullets.erase(it);
         }
       else
@@ -288,6 +287,7 @@ void Game::CheckForCollisions()
       if(CheckCollisionCircles(bullet.GetCollisionPosition(), bullet.GetCollisionRadius(), player.GetCollisionPosition(), player.GetCollisionRadius()))
         {
           bullet.shouldBeDestroyed = true;
+          hits.push_back(Hit(bullet.GetCollisionPosition()));
           if (invincibilityTimer <= 0)
             {
               player.DealDamage(1);
@@ -410,6 +410,7 @@ void Game::RESET()
   midWaveTimer = 3.0f;
   midWaveTime = 0.0f;
   player.SetHealth(3);
+  playerBullets.clear();
   enemies.clear();
   enemyBullets.clear();
   enemyBullets.clear();

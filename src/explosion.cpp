@@ -33,7 +33,7 @@ void Explosion::Update(float deltaTime)
 
 void Explosion::Draw()
 {
-  DrawTextureRec(image, sourceImage, position, WHITE);
+  DrawTextureRec(image, sourceImage, {position.x - image.width / 16, position.y - image.height / 2}, WHITE);
 }
 
 void Explosion::UnloadImages()

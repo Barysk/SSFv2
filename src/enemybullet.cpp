@@ -97,8 +97,8 @@ void EnemyBullet::Draw()
   DrawTexturePro(images[type-1], sRect, dRect, origin, 0.0f, WHITE);
 
   // Hurtbox/Hitbox
-  // DrawCircleV(position, 2, BLUE);
-  // DrawCircleV(position, 1, WHITE);
+  //DrawCircleV(position, 2, BLUE);
+  //DrawCircleV(position, 1, WHITE);
 }
 
 // Check if the bullet should be removed (after 1.5 seconds)

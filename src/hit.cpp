@@ -33,7 +33,7 @@ void Hit::Update(float deltaTime)
 
 void Hit::Draw()
 {
-  DrawTextureRec(image, sourceImage, position, WHITE);
+  DrawTextureRec(image, sourceImage, {position.x - image.width / 8, position.y - image.height / 2}, WHITE);
 }
 
 void Hit::UnloadImages()
