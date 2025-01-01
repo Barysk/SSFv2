@@ -13,7 +13,9 @@ add_executable(SSF2 main.cpp
     include/playerbullet.h src/playerbullet.cpp
     include/enemy.h src/enemy.cpp
     include/enemybullet.h src/enemybullet.cpp
-    include/menu.h src/menu.cpp)
+    include/menu.h src/menu.cpp
+    include/explosion.h src/explosion.cpp
+    include/hit.h src/hit.cpp)
 
 target_link_libraries(SSF2 raylib)
 

@@ -35,6 +35,8 @@ Game::~Game()
   PlayerBullet::UnloadImage();
   Enemy::UnloadImages();
   EnemyBullet::UnloadImage();
+  Explosion::UnloadImages();
+  Hit::UnloadImages();
   UnloadSound(playerShooting);
   UnloadSound(playerHit);
   UnloadSound(enemyExplosion);
@@ -65,18 +67,40 @@ void Game::Update()
   // Player Input
   HandleInput();
 
+  // erase explosion effects
+  for (auto it = explosions.begin(); it != explosions.end();)
+    {
+      if (it->ShouldDelete())
+        it = explosions.erase(it);
+      else
+        ++it;
+    }
+
+  // Update Explosion effects
+  for (auto& explosion: explosions)
+    explosion.Update(deltaTime);
+
+  // erase hit
+  for (auto it = hits.begin(); it != hits.end();)
+    {
+      if (it->ShouldDelete())
+        it = hits.erase(it);
+      else
+        ++it;
+    }
+
+  // Update Explosion effects
+  for (auto& hit: hits)
+    hit.Update(deltaTime);
+
   // delete inactive player bullets
   for (auto it = playerBullets.begin(); it != playerBullets.end();)
     {
       // If the bullet's timeActive is >= 1.5 seconds, remove it
       if (it->ShouldDelete())
-        {
-          it = playerBullets.erase(it); // Erase the bullet and move to the next
-        }
+        it = playerBullets.erase(it); // Erase the bullet and move to the next
       else
-        {
-          ++it; // Otherwise, just move to the next bullet
-        }
+        ++it; // Otherwise, just move to the next bullet
     }
 
   // Move active player bullets
@@ -129,28 +153,32 @@ void Game::Draw()
   // Background
   background.Draw();
 
-  // Savepoint
-  // ...
-
   BeginMode2D(player.camera);
 
     // Drawing player bullets
     for(auto& bullet: playerBullets)
       bullet.Draw();
 
-    //Drawing enemy bullets
+    // Draw hit effects
+    for (auto& hit: hits)
+      hit.Draw();
 
+    //Drawing enemy bullets
     for(auto& bullet: enemyBullets)
       {
         bullet.Draw();
       }
 
-    // Drawing player
-    player.Draw();
-
     // Enemy
     for(auto& enemy: enemies)
       enemy.Draw();
+
+    // Draw Explosion effects
+    for (auto& explosion: explosions)
+      explosion.Draw();
+
+    // Drawing player
+    player.Draw();
 
   EndMode2D();
 
@@ -226,6 +254,8 @@ void Game::CheckForCollisions()
             {
               score += it->GetScore() * player.GetHealth();
               PlaySound(enemyExplosion);
+              // EFFECT
+              explosions.push_back(Explosion(it->GetCollisionPosition()));
               it = enemies.erase(it);
               bullet.shouldBeDestroyed = true;
             }
@@ -241,6 +271,7 @@ void Game::CheckForCollisions()
           if(CheckCollisionCircles(bullet.GetCollisionPosition(), bullet.GetCollisionRadius(), enemyBullet.GetCollisionPosition(), enemyBullet.GetCollisionRadius()))
             {
               score += 1;
+              hits.push_back(Hit(enemyBullet.GetCollisionPosition()));
               enemyBullet.shouldBeDestroyed = true;
               bullet.Penetrate();
             }

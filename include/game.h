@@ -2,6 +2,8 @@
 #include "../include/player.h"
 #include "../include/background.h"
 #include "../include/enemy.h"
+#include "../include/explosion.h"
+#include "../include/hit.h"
 #include <string>
 
 class Game
@@ -36,6 +38,8 @@ private:
   std::vector<PlayerBullet> playerBullets;
   std::vector<Enemy> enemies;
   std::vector<EnemyBullet> enemyBullets;
+  std::vector<Explosion> explosions;
+  std::vector<Hit> hits;
   Vector2 playerDirection;
   Vector2 playerAttackDirection;
   Background background;
