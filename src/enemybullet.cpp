@@ -49,7 +49,7 @@ EnemyBullet::EnemyBullet(Vector2 position, Vector2 direction, float speed, int b
 
   this->speed = speed;
   timeActive = 0.0f;
-  timeToLive = 6.4f;
+  timeToLive = 12.8f;
   rotation = atan2(this->direction.y, this->direction.x) * RAD2DEG + 90;
 }
 
