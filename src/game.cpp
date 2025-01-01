@@ -121,9 +121,14 @@ void Game::Update()
   for(auto it = enemyBullets.begin(); it != enemyBullets.end();)
     {
       if(it->ShouldDelete())
-        it = enemyBullets.erase(it);
+        {
+          hits.push_back(Hit(it->GetCollisionPosition()));
+          it = enemyBullets.erase(it);
+        }
       else
-        ++it;
+        {
+          ++it;
+        }
     }
 
   // Move active enemy bullets
@@ -408,6 +413,8 @@ void Game::RESET()
   enemies.clear();
   enemyBullets.clear();
   enemyBullets.clear();
+  hits.clear();
+  explosions.clear();
 }
 
 bool Game::ShouldEnd()

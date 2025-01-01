@@ -6,7 +6,7 @@ Player::Player()
 {
   playerShooting = LoadSound("assets/sounds/shoot.mp3");
   health = 3;
-  for(int i = 0; i < 3; i++)
+  for(int i = 0; i < health; i++)
     {
       if(images[i].id == 0)
         {
