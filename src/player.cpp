@@ -32,7 +32,7 @@ Player::Player()
   rotation = 0.0f;
   speed = 100;
   lastTimeFired = 0.0f;
-  cooldown = 0.12f;
+  cooldown = 0.08f;
 
   // Camera Init
   camera = {0}; // reseting any settings
@@ -105,10 +105,10 @@ void Player::Attack(Vector2 attackDirection, std::vector<PlayerBullet>& bullets)
     {
     rotation = atan2(attackDirection.y, attackDirection.x) * RAD2DEG + 90;
 
-    if(GetTime() - lastTimeFired >= cooldown)
+    if(GetTime() - lastTimeFired >= cooldown && bullets.size() < 8)
       {
         PlaySound(playerShooting);
-        bullets.push_back(PlayerBullet(position, Vector2Rotate(attackDirection, GetRandomValue(-16, 16) * DEG2RAD)));
+        bullets.push_back(PlayerBullet(position, Vector2Rotate(attackDirection, GetRandomValue(-24, 24) * DEG2RAD)));
         lastTimeFired = GetTime();
       }
     }

@@ -20,6 +20,10 @@ Game::Game()
   midWaveTimer = 3.0f;
   midWaveTime = 0.0f;
 
+  // Players invincibility
+  invincibilityTime = 1.6f;
+  invincibilityTimer = invincibilityTime;
+
   // Sounds
   playerHit = LoadSound("assets/sounds/hitPlayer.mp3");
   enemyExplosion = LoadSound("assets/sounds/enemyExplosion.mp3");
@@ -38,9 +42,11 @@ Game::~Game()
 
 void Game::Update()
 { 
-
   // Updating deltaTime
   deltaTime = GetFrameTime();
+
+  if(invincibilityTimer > 0)
+      invincibilityTimer -= deltaTime;
 
   if(enemies.empty() && midWaveTime < midWaveTimer)
     {
@@ -246,8 +252,12 @@ void Game::CheckForCollisions()
       if(CheckCollisionCircles(bullet.GetCollisionPosition(), bullet.GetCollisionRadius(), player.GetCollisionPosition(), player.GetCollisionRadius()))
         {
           bullet.shouldBeDestroyed = true;
-          player.DealDamage(1);
-          PlaySound(playerHit);
+          if (invincibilityTimer <= 0)
+            {
+              player.DealDamage(1);
+              PlaySound(playerHit);
+              invincibilityTimer = invincibilityTime;
+            }
         }
     }
 }
@@ -329,16 +339,16 @@ void Game::SpawnWave()
               SpawnEnemies(3, 1);
               spawnToken -= 1;
               break;
-            case 3: // Wall bullet
-              SpawnEnemies(2, 1);
+            case 3: // Field bullet
+              SpawnEnemies(5, 1);
               spawnToken -= 2;
               break;
             case 4: // Waving bullet
               SpawnEnemies(4, 1);
               spawnToken -= 2;
               break;
-            case 5: // Field bullet
-              SpawnEnemies(5, 1);
+            case 5: // Wall bullet
+              SpawnEnemies(2, 1);
               spawnToken -= 3;
               break;
             default:

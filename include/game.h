@@ -40,6 +40,9 @@ private:
   Vector2 playerAttackDirection;
   Background background;
 
+  float invincibilityTime;
+  float invincibilityTimer;
+
   int hiScore;
   int score;
 };

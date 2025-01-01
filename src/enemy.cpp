@@ -162,7 +162,11 @@ void Enemy::Attack(std::vector<EnemyBullet>& bullets)
     case 3:
       if(GetTime() - lastTimeFired >= cooldown)
         {
-          bullets.push_back(EnemyBullet(position, Vector2Rotate(direction, (float)GetRandomValue(-30, 30) * DEG2RAD), (float)bulletSpeed, 0, type));
+          int randVal = GetRandomValue(-30, 30);
+          for(int i = -1; i <= 1; i += 2)
+            {
+              bullets.push_back(EnemyBullet(position, Vector2Rotate(direction, (randVal + i) * DEG2RAD), speed/2 + (float)bulletSpeed, 0, type));
+            }
           lastTimeFired = GetTime();
         }
     case 4:
